@@ -5,7 +5,8 @@ import LoginPage from '@/pages/LoginPage'
 import DashboardPage from '@/pages/DashboardPage'
 import TestCode from '@/pages/TestCode'
 import TestCode2 from '@/pages/TestCode2'
-import Profile from '@/pages/Profile1'
+import ProfilePage from '@/pages/ProfilePage'
+
 
 export default function AppRouter() {
   return (
@@ -21,7 +22,7 @@ export default function AppRouter() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/test-code" element={<TestCode />} />
             <Route path="/test-code2" element={<TestCode2 />} />
-            <Route path="/fawwaz-dzaki-rahman" element={<Profile />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
 
