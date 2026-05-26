@@ -24,7 +24,7 @@ export default function LoginPage() {
   const location = useLocation()
   const from = location.state?.from?.pathname ?? '/dashboard'
 
-  const [form, setForm] = useState({ email: '', password: '' })
+  const [form, setForm] = useState({ email: ' ', password: ' ' })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)

@@ -7,7 +7,6 @@ import TestCode from '@/pages/TestCode'
 import TestCode2 from '@/pages/TestCode2'
 import ProfilePage from '@/pages/ProfilePage'
 
-
 export default function AppRouter() {
   return (
     <BrowserRouter>
