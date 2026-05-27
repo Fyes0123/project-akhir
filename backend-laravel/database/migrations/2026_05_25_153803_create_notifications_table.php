@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
-        $table->string('title');
-        $table->text('message');
-        $table->string('type');
-        $table->unsignedBigInteger('reference_id')->nullable();
-        $table->string('reference_type')->nullable();
-        $table->boolean('is_read')->default(false);
-        $table->timestamps();
-    });
+    $table->id();
+    $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
+    $table->string('title');
+    $table->text('message');
+    $table->string('type');
+    $table->unsignedBigInteger('reference_id')->nullable();
+    $table->enum('reference_type', ['loan_applications', 'documents', 'quiz_attempts', 'loan', 'payment'])->nullable();
+    $table->boolean('is_read')->default(false);
+    $table->timestamps();
+});
     }
 
     /**

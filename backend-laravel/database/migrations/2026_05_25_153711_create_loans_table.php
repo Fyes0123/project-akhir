@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('loans', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('loans_application_id')->constrained('loans_application')->onDelete('cascade');
-        $table->decimal('interest_rate', 5, 2);
-        $table->date('loan_start_date');
-        $table->date('loan_end_date');
-        $table->decimal('total_amount', 15, 2);
-        $table->decimal('remaining_balance', 15, 2);
-        $table->string('status')->default('ongoing');
-        $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('loans_application_id')->constrained('loans_application')->onDelete('cascade');
+    $table->decimal('interest_rate', 5, 2);
+    $table->date('loan_start_date');
+    $table->date('loan_end_date');
+    $table->decimal('total_amount', 15, 2);
+    $table->decimal('remaining_balance', 15, 2);
+    $table->enum('status', ['ongoing', 'completed', 'default'])->default('ongoing');
+    $table->timestamps();
+});
     }
 
     /**

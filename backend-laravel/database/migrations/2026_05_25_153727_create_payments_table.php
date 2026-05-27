@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('loans_id')->constrained('loans')->onDelete('cascade');
-        $table->integer('installment_number');
-        $table->decimal('amount', 15, 2);
-        $table->date('due_date');
-        $table->date('payment_date')->nullable();
-        $table->string('status')->default('pending');
-        $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('loans_id')->constrained('loans')->onDelete('cascade');
+    $table->integer('installment_number');
+    $table->decimal('amount', 15, 2);
+    $table->date('due_date');
+    $table->date('payment_date')->nullable();
+    $table->enum('status', ['pending', 'paid', 'late', 'failed'])->default('pending');
+    $table->timestamps();
+});
     }
 
     /**
