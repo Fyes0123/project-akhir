@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('loans_id')->constrained('loans')->onDelete('cascade');
-        $table->foreignId('payments_id')->nullable()->constrained('payments')->onDelete('set null');
-        $table->decimal('amount', 15, 2);
-        $table->string('transaction_type'); // disbursement/payment/penalty/refund
-        $table->timestamp('transactions_date');
-        $table->timestamps();
-    });
+    $table->id();
+    $table->foreignId('loans_id')->constrained('loans')->onDelete('cascade');
+    $table->foreignId('payments_id')->nullable()->constrained('payments')->onDelete('set null');
+    $table->decimal('amount', 15, 2);
+    $table->enum('transaction_type', ['disbursement', 'payment', 'penalty', 'refund']);
+    $table->timestamp('transactions_date');
+    $table->timestamps();
+});
     }
 
     /**
