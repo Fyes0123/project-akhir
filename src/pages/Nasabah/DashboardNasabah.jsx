@@ -20,7 +20,7 @@ import {
   Stack,
 } from '@mui/material'
 
-export default function DashboardPage() {
+export default function DashboardNasabah() {
   const { user } = useAuth()
   const navigate = useNavigate()
 
