@@ -1,15 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
-Route::get('/test', function () {
-    return response()->json([
-        'message' => 'GET works'
-    ]);
-});
-
-Route::post('/test', function () {
-    return response()->json([
-        'message' => 'POST works'
-    ]);
-});
+Route::post('/register', [UserController::class, 'register']);
