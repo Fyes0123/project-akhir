@@ -1,62 +1,139 @@
 import React from "react";
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+} from "@mui/material";
 
 const modules = [
   {
     title: "Loan Services",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800",
   },
   {
     title: "Merchant Loan Approval",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800",
   },
   {
     title: "Repayment Schedule",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800",
   },
   {
     title: "Late Payment",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800",
   },
 ];
 
 export default function ModulePage() {
   return (
-    <div className="min-h-screen bg-gray-200 flex justify-center p-6">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-md overflow-hidden">
-        <div className="bg-green-700 text-white text-center py-3 font-bold">
+    <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", p: 4 }}>
+
+      {/* Header */}
+      <Box
+        sx={{
+          bgcolor: "#14532d",
+          color: "white",
+          py: 2,
+          textAlign: "center",
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+        }}
+      >
+        <Typography variant="h5" fontWeight={700}>
           Talking Module
-        </div>
+        </Typography>
+      </Box>
 
-        <div className="p-4 bg-green-700 space-y-5">
+      {/* Content */}
+      <Box
+        sx={{
+          bgcolor: "#166534",
+          p: 4,
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8,
+        }}
+      >
+
+        {/* GRID 2 KOLOM */}
+        <Grid container spacing={4}>
+
           {modules.map((item, index) => (
-            <div key={index} className="bg-white rounded shadow p-3">
-              <h3 className="text-center font-semibold mb-3">
-                {item.title}
-              </h3>
+            <Grid item xs={12} md={6} key={index}>
 
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-48 object-cover rounded"
-              />
-            </div>
+              <Card sx={{ borderRadius: 3, overflow: "hidden" }}>
+
+                {/* Image */}
+                <Box
+                  component="img"
+                  src={item.image}
+                  alt={item.title}
+                  sx={{
+                    width: "100%",
+                    height: 250,
+                    objectFit: "cover",
+                  }}
+                />
+
+                {/* Text */}
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    textAlign="center"
+                    fontWeight={600}
+                  >
+                    {item.title}
+                  </Typography>
+                </CardContent>
+
+              </Card>
+
+            </Grid>
           ))}
-        </div>
 
-        <div className="flex justify-between p-4">
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
+        </Grid>
+
+        {/* Buttons */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 2,
+            mt: 5,
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#84cc16",
+              color: "black",
+              fontWeight: 700,
+              px: 4,
+            }}
+          >
             Proceed
-          </button>
+          </Button>
 
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#84cc16",
+              color: "black",
+              fontWeight: 700,
+              px: 4,
+            }}
+          >
             Go Back
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+
+      </Box>
+    </Box>
   );
 }

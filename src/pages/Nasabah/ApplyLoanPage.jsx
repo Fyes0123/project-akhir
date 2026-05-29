@@ -2,85 +2,201 @@ import React from "react";
 
 export default function ApplyLoanPage() {
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center p-6">
-      <div className="w-full max-w-sm bg-white shadow-xl rounded-md p-6">
-        <div className="bg-green-700 text-white text-center py-2 font-bold rounded mb-5">
-          Loan Application
+    <div className="min-h-screen bg-gray-100 py-10 px-4">
+      
+      {/* CONTAINER */}
+      <div className="max-w-3xl mx-auto">
+
+        {/* HEADER CARD */}
+        <div className="bg-green-900 text-white rounded-t-xl p-6 shadow-lg">
+          <h1 className="text-4xl font-bold">
+            Loan Application
+          </h1>
+
+          <p className="mt-2 text-green-100">
+            Lengkapi formulir berikut untuk mengajukan pinjaman usaha.
+          </p>
         </div>
 
-        <div className="space-y-3">
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full border p-2 rounded"
-          />
+        {/* FORM CARD */}
+        <div className="bg-white rounded-b-xl shadow-lg p-8 space-y-8">
 
-          <input
-            type="text"
-            placeholder="Phone Number"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="text"
-            placeholder="Applicant Monthly Income"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="text"
-            placeholder="Employer Name"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="text"
-            placeholder="Loan Amount Requested"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="text"
-            placeholder="Repayment Period"
-            className="w-full border p-2 rounded"
-          />
-
-          <input
-            type="text"
-            placeholder="Purpose of Loan"
-            className="w-full border p-2 rounded"
-          />
-
+          {/* PERSONAL INFORMATION */}
           <div>
-            <label className="block text-sm mb-1">Upload KTP</label>
-            <input type="file" className="w-full text-sm" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+              Personal Information
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-5">
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Enter your full name"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Phone Number
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="08xxxxxxxxxx"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Employer Name
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Your business/company"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+            </div>
           </div>
 
+          {/* LOAN INFORMATION */}
           <div>
-            <label className="block text-sm mb-1">Upload Selfie</label>
-            <input type="file" className="w-full text-sm" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+              Loan Information
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-5">
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Monthly Income
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Rp 5.000.000"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Loan Amount
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Rp 10.000.000"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Repayment Period
+                </label>
+
+                <select
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                >
+                  <option>3 Months</option>
+                  <option>6 Months</option>
+                  <option>12 Months</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Purpose of Loan
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Business Expansion"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+                />
+              </div>
+
+            </div>
           </div>
 
+          {/* DOCUMENT UPLOAD */}
           <div>
-            <label className="block text-sm mb-1">Upload Income Proof</label>
-            <input type="file" className="w-full text-sm" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+              Upload Documents
+            </h2>
+
+            <div className="space-y-5">
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Upload KTP
+                </label>
+
+                <input
+                  type="file"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Upload Selfie
+                </label>
+
+                <input
+                  type="file"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">
+                  Upload Income Proof
+                </label>
+
+                <input
+                  type="file"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                />
+              </div>
+
+            </div>
           </div>
-        </div>
 
-        <div className="flex justify-between mt-6">
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
-            Proceed
-          </button>
+          {/* BUTTONS */}
+          <div className="flex justify-end gap-4 pt-4">
 
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
-            Go Back
-          </button>
+            <button className="px-6 py-3 rounded-lg bg-gray-300 hover:bg-gray-400 transition font-semibold">
+              Go Back
+            </button>
+
+            <button className="px-6 py-3 rounded-lg bg-lime-500 hover:bg-lime-600 text-white font-semibold transition">
+              Submit Application
+            </button>
+
+          </div>
         </div>
       </div>
     </div>

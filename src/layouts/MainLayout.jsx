@@ -1,179 +1,149 @@
-import { useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import {
-  AppBar,
-  Avatar,
-  Box,
-  CssBaseline,
-  Divider,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import LogoutIcon from '@mui/icons-material/Logout'
-import PersonIcon from '@mui/icons-material/Person'
-import DashboardIcon from '@mui/icons-material/Dashboard'
-import SettingsIcon from '@mui/icons-material/Settings'
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import InboxIcon from '@mui/icons-material/Inbox'
-import NavMenu from '@/components/ui/NavMenu'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 
-const DRAWER_WIDTH = 240
-
-/** Define your nav tree here – add/remove items as needed */
-const NAV_ITEMS = [
-  {
-    label: 'Dashboard',
-    path: '/dashboard',
-    icon: <DashboardIcon fontSize="small" />,
-  },
-  {
-    label: 'Test Code',
-    path: '/test-code',
-    icon: <InboxIcon fontSize="small" />,
-  },
-  {
-    label: 'Test Code2',
-    path: '/test-code2',
-    icon: <InboxIcon fontSize="small" />,
-  },
-  {
-    label: 'Profile',
-    path: '/fawwaz-dzaki-rahman',
-    icon: <InboxIcon fontSize="small" />,
-  },
-  // {
-  //   label: 'Settings',
-  //   icon: <SettingsIcon fontSize="small" />,
-  //   children: [
-  //     { label: 'Profile', path: '/settings/profile', icon: <PersonOutlineIcon fontSize="small" /> },
-  //     { label: 'Security', path: '/settings/security', icon: <LockOutlinedIcon fontSize="small" /> },
-  //   ],
-  // },
-]
+import {
+  AppBar,
+  Box,
+  Button,
+  CssBaseline,
+  Toolbar,
+  Typography,
+} from '@mui/material'
 
 export default function MainLayout() {
-  const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const [drawerOpen, setDrawerOpen] = useState(true)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const location = useLocation()
 
-  function toggleDrawer() {
-    setDrawerOpen((v) => !v)
+  // AUTH
+  const { logout } = useAuth()
+
+  const menus = [
+    {
+      label: 'Dashboard',
+      path: '/dashboard',
+    },
+    {
+      label: 'Profile',
+      path: '/profile',
+    },
+    {
+      label: 'Modul',
+      path: '/module',
+    },
+    {
+      label: 'Komunitas',
+      path: '/komunitas',
+    },
+  ]
+
+  // HANDLE LOGOUT
+  const handleLogout = () => {
+    logout()
+
+    navigate('/login', {
+      replace: true,
+    })
   }
 
-  const drawerContent = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-      <Toolbar sx={{ px: 2, minHeight: 64 }}>
-        <Typography variant="h6" fontWeight={700} color="primary" noWrap>
-          Tittle Tugas Akhir
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', py: 1 }}>
-        <NavMenu items={NAV_ITEMS} onNavigate={() => setDrawerOpen(false)} />
-      </Box>
-    </Box>
-  )
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh' }}>
       <CssBaseline />
 
-      {/* ── AppBar ── */}
+      {/* Navbar */}
       <AppBar
-        position="fixed"
-        color="inherit"
+        position="static"
         sx={{
-          zIndex: (t) => t.zIndex.drawer + 1,
-          transition: (t) =>
-            t.transitions.create(['width', 'margin'], {
-              easing: t.transitions.easing.sharp,
-              duration: t.transitions.duration.leavingScreen,
-            }),
-          ...(drawerOpen && {
-            ml: `${DRAWER_WIDTH}px`,
-            width: `calc(100% - ${DRAWER_WIDTH}px)`,
-            transition: (t) =>
-              t.transitions.create(['width', 'margin'], {
-                easing: t.transitions.easing.sharp,
-                duration: t.transitions.duration.enteringScreen,
-              }),
-          }),
+          bgcolor: '#003b2f',
+          px: 2,
+          py: 1,
+          boxShadow: 'none',
         }}
       >
-        <Toolbar>
-          <IconButton edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flex: 1 }} />
-          <Tooltip title={user?.name ?? 'Account'}>
-            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} size="small">
-              <Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 15 }}>
-                {user?.name?.[0]?.toUpperCase() ?? 'U'}
-              </Avatar>
-            </IconButton>
-          </Tooltip>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 2,
+          }}
+        >
+          {/* Logo */}
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              color: 'white',
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate('/dashboard')}
+          >
+            Amartha Empower
+          </Typography>
+
+          {/* Menu */}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+              alignItems: 'center',
+            }}
+          >
+            {menus.map((menu) => {
+              const isActive = location.pathname === menu.path
+
+              return (
+                <Button
+                  key={menu.path}
+                  variant="contained"
+                  onClick={() => navigate(menu.path)}
+                  sx={{
+                    bgcolor: isActive ? '#4caf50' : '#2f8f2f',
+                    borderRadius: 1.5,
+                    px: 4,
+                    py: 1,
+                    textTransform: 'none',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+
+                    '&:hover': {
+                      bgcolor: '#4caf50',
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  {menu.label}
+                </Button>
+              )
+            })}
+
+            {/* LOGOUT BUTTON */}
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleLogout}
+              sx={{
+                borderRadius: 1.5,
+                px: 4,
+                py: 1,
+                textTransform: 'none',
+                fontWeight: 700,
+                boxShadow: 'none',
+
+                '&:hover': {
+                  boxShadow: 'none',
+                },
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
-      {/* ── User menu ── */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        <MenuItem disabled>
-          <PersonIcon fontSize="small" sx={{ mr: 1 }} />
-          {user?.email}
-        </MenuItem>
-        <Divider />
-        <MenuItem
-          onClick={() => {
-            setAnchorEl(null)
-            logout()
-            navigate('/login', { replace: true })
-          }}
-        >
-          <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
-          Logout
-        </MenuItem>
-      </Menu>
-
-      {/* ── Drawer ── */}
-      <Drawer
-        variant="persistent"
-        open={drawerOpen}
-        sx={{
-          width: DRAWER_WIDTH,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: DRAWER_WIDTH,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
-
-      {/* ── Main content ── */}
+      {/* Content */}
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           p: 3,
-          mt: 8,
-          bgcolor: 'background.default',
-          minHeight: '100vh',
-          transition: (t) =>
-            t.transitions.create('margin', {
-              easing: t.transitions.easing.sharp,
-              duration: t.transitions.duration.leavingScreen,
-            }),
-          ml: drawerOpen ? 0 : `-${DRAWER_WIDTH}px`,
         }}
       >
         <Outlet />
