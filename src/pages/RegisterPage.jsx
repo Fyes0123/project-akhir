@@ -11,7 +11,7 @@ import { Password } from '@mui/icons-material'
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
-    fullName: '',
+    fullname: '',
     email: '',
     Password: '',
     phone: '',
@@ -28,22 +28,37 @@ export default function RegisterPage() {
     })
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  async function handleSubmit(e) {
+  e.preventDefault()
 
-    const newUser = {
-      ...form,
-      progress: 75,
-      photo: 'https://i.pravatar.cc/150',
-    }
+  try {
+    const response = await fetch(
+      'http://127.0.0.1:8000/api/register',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      }
+    )
+
+    const data = await response.json()
+
+    console.log(data)
+
+    alert('Register berhasil!')
 
     localStorage.setItem(
       'nasabah_data',
-      JSON.stringify(newUser)
+      JSON.stringify(data.data)
     )
 
-    alert('Register berhasil!')
+  } catch (error) {
+    console.error(error)
+    alert('Register gagal!')
   }
+}
 
   return (
     <Box
