@@ -7,13 +7,17 @@ import {
   Card,
   Grid,
 } from '@mui/material'
+import { Password } from '@mui/icons-material'
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
     fullName: '',
     email: '',
+    Password: '',
     phone: '',
     business: '',
+    address : '',
+    role : Borrower ,
     description: '',
   })
 
@@ -93,6 +97,15 @@ export default function RegisterPage() {
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
+                label="Password"
+                name="password"
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
                 label="Nomor HP"
                 name="phone"
                 onChange={handleChange}
@@ -104,6 +117,15 @@ export default function RegisterPage() {
                 fullWidth
                 label="Nama Usaha"
                 name="business"
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Alamat"
+                name="address"
                 onChange={handleChange}
               />
             </Grid>
