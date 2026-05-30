@@ -6,6 +6,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import NasabahCard from '@/pages/Card/NasabahCard'
 
 import {
   Typography,

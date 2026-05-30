@@ -13,7 +13,7 @@ import ListNasabah from '@/pages/Admin/ListNasabah'
 import ListPinjaman from '@/pages/Admin/ListPeminjaman'
 import LoanApplication from '@/pages/Admin/LoanApplication'
 import LandingPage from '@/pages/LandingPage'
-import NasabahCard from '@/pages/Nasabah/NasabahCard'
+import NasabahCard from '@/pages/Card/NasabahCard'
 import RegisterPage from '@/pages/RegisterPage'
 
 
@@ -43,9 +43,6 @@ export default function AppRouter() {
           <Route element={<MainLayout />}>
             {/* Nasabah */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/test-code" element={<TestCode />} />
-            <Route path="/test-code2" element={<TestCode2 />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboardnasabah" element={<DashboardNasabah />} />
             <Route path="/" element={<Navigate to="/dashboardnasabah" replace />} />
