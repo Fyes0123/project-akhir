@@ -17,7 +17,7 @@ export default function RegisterPage() {
     phone: '',
     business: '',
     address : '',
-    role : Borrower ,
+    role : 'borrower' ,
     description: '',
   })
 

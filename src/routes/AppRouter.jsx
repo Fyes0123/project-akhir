@@ -42,7 +42,6 @@ export default function AppRouter() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             {/* Nasabah */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboardnasabah" element={<DashboardNasabah />} />
             <Route path="/" element={<Navigate to="/dashboardnasabah" replace />} />
