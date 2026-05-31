@@ -13,12 +13,13 @@ class UserController extends Controller
     try {
 
         $validated = $request->validate([
-            'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:20',
-            'business' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+             'fullName' => 'required|string|max:255',
+             'email' => 'required|email|unique:users,email',
+             'password' => 'required|string|min:8',
+             'phone' => 'required|string|max:20',
+             'business' => 'nullable|string|max:255',
+             'description' => 'nullable|string',
+             'address' => 'required|string',
         ]);
 
         $user = User::create([
@@ -28,7 +29,8 @@ class UserController extends Controller
             'phone_number' => $validated['phone'],
             'role' => 'borrower',
             'business_name' => $validated['business'],
-            'address' => $validated['description'] ?? 'No address',
+            'business_type' => $validated['description'] ?? null,
+            'address' => $validated['address'],
         ]);
 
         return response()->json([
@@ -45,5 +47,18 @@ class UserController extends Controller
         ], 500);
 
     }
+}
+
+public function show($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'message' => 'User not found'
+        ], 404);
+    }
+
+    return response()->json($user);
 }
 }

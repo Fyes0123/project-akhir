@@ -43,16 +43,25 @@ export default function RegisterPage() {
       }
     )
 
-    const data = await response.json()
+const data = await response.json()
 
-    console.log(data)
+console.log("FULL RESPONSE:", data)
 
-    alert('Register berhasil!')
+if (!response.ok) {
+  throw new Error(data.error || 'Register gagal')
+}
 
-    localStorage.setItem(
-      'nasabah_data',
-      JSON.stringify(data.data)
-    )
+console.log("USER:", data.user)
+
+localStorage.setItem(
+  'nasabah_data',
+  JSON.stringify(data.user)
+)
+
+console.log(
+  "Stored:",
+  localStorage.getItem('nasabah_data')
+)
 
   } catch (error) {
     console.error(error)
