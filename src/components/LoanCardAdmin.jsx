@@ -1,99 +1,94 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function LoanCardAdmin({ data, onVerifyClick }) {
-  const styles = {
-    card: {
-      width: '300px', // 👈 KUNCI: Diubah dari '100%' menjadi ukuran fix '300px' agar bisa berjejer
-      backgroundColor: '#10943b',
-      borderRadius: '16px',
-      padding: '20px',
-      boxSizing: 'border-box',
-      color: '#ffffff',
-      boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between' // Menjaga posisi tombol verifikasi selalu seimbang di bawah
-    },
-    headerRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      marginBottom: '12px'
-    },
-    borrowerName: {
-      fontSize: '18px',
-      fontWeight: 'bold',
-      maxWidth: '75%'
-    },
-    statusBadge: {
-      backgroundColor: '#ffda1a', // Kuning terang agar kontras di latar hijau
-      color: '#042914',
-      padding: '4px 10px',
-      borderRadius: '20px',
-      fontSize: '11px',
-      fontWeight: 'bold'
-    },
-    amountBox: {
-      backgroundColor: '#60d040', // Kotak nominal hijau stabilo
-      color: '#ffffff',
-      padding: '12px',
-      borderRadius: '8px',
-      textAlign: 'center',
-      fontWeight: '800',
-      fontSize: '20px',
-      marginBottom: '16px'
-    },
-    detailsText: {
-      fontSize: '14px',
-      lineHeight: '1.5',
-      marginBottom: '16px',
-      opacity: 0.9
-    },
-    actionButton: {
-      width: '100%',
-      padding: '10px 0',
-      backgroundColor: '#80e000', // Tombol hijau stabilo terang khas kelompokmu
-      color: '#042914',
-      border: 'none',
-      borderRadius: '6px',
-      fontWeight: 'bold',
-      fontSize: '14px',
-      cursor: 'pointer',
-      textAlign: 'center',
-      transition: 'background 0.2s'
-    }
-  };
+// Kita ganti tangkapannya menjadi 'data' agar pas dengan file LoanApplication-mu!
+const LoanCardAdmin = ({ data }) => {
+  const navigate = useNavigate();
 
-  const formatRupiah = (angka) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(angka);
+  // Memetakan isi data dummy asli kamu agar terbaca sempurna
+  const name = data?.nama_nasabah || 'Nama Tidak Diketahui';
+  const amount = data?.jumlah_pinjaman || 0;
+  const purpose = data?.tujuan_pinjaman || '-';
+  const tenor = data?.tenor ? `${data.tenor} Bulan` : '-';
+  const status = data?.status || 'Pending';
+
+  const handleCardClick = () => {
+    // Melempar data yang diklik ke halaman verifikasi dengan selamat!
+    navigate('/admin/verification', { 
+      state: { 
+        loanData: { name, amount, tenor, status, purpose } 
+      } 
+    });
   };
 
   return (
-    <div style={styles.card}>
-      <div style={styles.headerRow}>
-        <div style={styles.borrowerName}>{data.nama_nasabah}</div>
-        <span style={styles.statusBadge}>{data.status}</span>
-      </div>
-      
-      <div style={styles.amountBox}>
-        {formatRupiah(data.jumlah_pinjaman)}
+    <div style={{
+      backgroundColor: "#white",
+      background: "white",
+      borderRadius: "12px",
+      boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)",
+      border: "1px solid #e5e7eb",
+      padding: "24px",
+      width: "280px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "between",
+      fontFamily: "sans-serif"
+    }}>
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <span style={{
+            fontSize: "12px",
+            fontWeight: "600",
+            padding: "2px 10px",
+            borderRadius: "4px",
+            backgroundColor: "#fef3c7",
+            color: "#92400e"
+          }}>
+            {status}
+          </span>
+          <span style={{ fontSize: "12px", color: "#9ca3af" }}>ID: {data?.id}</span>
+        </div>
+        
+        <h3 style={{ fontSize: "18px", fontWeight: "bold", color: "#1f2937", marginBottom: "4px" }}>{name}</h3>
+        <p style={{ fontSize: "13px", color: "#4b5563", marginBottom: "16px" }}>Tujuan: {purpose}</p>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px" }}>
+            <span style={{ color: "#6b7280" }}>Jumlah Pinjaman</span>
+            <span style={{ fontWeight: "600", color: "#111827" }}>
+              Rp {amount.toLocaleString('id-ID')}
+            </span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px" }}>
+            <span style={{ color: "#6b7280" }}>Tenor</span>
+            <span style={{ fontWeight: "600", color: "#111827" }}>{tenor}</span>
+          </div>
+        </div>
       </div>
 
-      <div style={styles.detailsText}>
-        <div><strong>Tujuan:</strong> {data.tujuan_pinjaman}</div>
-        <div><strong>Tenor:</strong> {data.tenor} Bulan</div>
-      </div>
-
-      <button onClick={onVerifyClick} style={styles.actionButton}>
-        Verifikasi Pengajuan
+      <button 
+        onClick={handleCardClick}
+        style={{
+          width: "100%",
+          backgroundColor: "#2563eb",
+          color: "white",
+          fontWeight: "500",
+          padding: "10px 0",
+          borderRadius: "8px",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "14px",
+          textAlign: "center",
+          transition: "background-color 0.2s"
+        }}
+        onMouseOver={(e) => e.target.style.backgroundColor = "#1d4ed8"}
+        onMouseOut={(e) => e.target.style.backgroundColor = "#2563eb"}
+      >
+        Periksa Berkas
       </button>
     </div>
   );
-}
+};
 
 export default LoanCardAdmin;

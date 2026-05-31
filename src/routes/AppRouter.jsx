@@ -16,6 +16,7 @@ import ListNasabah from '@/pages/Admin/ListNasabah'
 import ListPinjaman from '@/pages/Admin/ListPeminjaman'
 import LoanApplication from '@/pages/Admin/LoanApplication'
 import LandingPage from '@/pages/LandingPage'
+import VerificationPage from '@/pages/Admin/VerificationPage';
 
 import DashboardSuperadmin from '../pages/Superadmin/DashboardSuperadmin'
 import ListPinjamanSuperadmin from '../pages/Superadmin/ListPinjamanSuperadmin'
@@ -57,6 +58,7 @@ export default function AppRouter() {
             <Route path="/listnasabah" element={<ListNasabah />} />
             <Route path="/listpinjaman" element={<ListPinjaman />} />
             <Route path="/loanapply" element={<LoanApplication />} />
+            <Route path="/admin/verification" element={<VerificationPage />} />
           </Route>
         </Route>
 
