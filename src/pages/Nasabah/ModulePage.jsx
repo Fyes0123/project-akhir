@@ -119,7 +119,7 @@ export default function ModulePage() {
               color: "black",
               fontWeight: 700,
               px: 4,
-            }}
+            }} onClick={() => navigate('/quiz')}  
           >
             Proceed
           </Button>

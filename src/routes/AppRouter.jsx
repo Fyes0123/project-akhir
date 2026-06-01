@@ -3,6 +3,7 @@ import ProtectedRoute from './ProtectedRoute'
 import MainLayout from '@/layouts/MainLayout'
 import LoginPage from '@/pages/LoginPage'
 import ProfilePage from '@/pages/ProfilePage'
+
 import DashboardNasabah from '@/pages/Nasabah/DashboardNasabah'
 import ApplyLoanPage from '@/pages/Nasabah/ApplyLoanPage'
 import InboxPage from '@/pages/Nasabah/InboxPage'
@@ -15,6 +16,7 @@ import LoanApplication from '@/pages/Admin/LoanApplication'
 import LandingPage from '@/pages/LandingPage'
 import NasabahCard from '@/pages/Card/NasabahCard'
 import RegisterPage from '@/pages/RegisterPage'
+import Quiz from '@/pages/Nasabah/Quiz'
 
 import VerificationPage from '@/pages/Admin/VerificationPage';
 
@@ -44,6 +46,7 @@ export default function AppRouter() {
         {/* ==================== PROTECTED ROUTES ==================== */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
+          
             {/* Nasabah */}
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboardnasabah" element={<DashboardNasabah />} />
@@ -53,6 +56,7 @@ export default function AppRouter() {
             <Route path="/inbox" element={<InboxPage />} />
             <Route path="/chatinbox" element={<ChatInboxPage />} />
             <Route path="/module" element={<ModulePage />} />
+            <Route path="/quiz" element={<Quiz />} />
             
             {/* Admin */}
             <Route path="/dashboardadmin" element={<DashboardAdmin />} />
