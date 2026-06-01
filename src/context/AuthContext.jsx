@@ -8,11 +8,13 @@ export function AuthProvider({ children }) {
     return stored ? JSON.parse(stored) : null
   })
 
-  const login = useCallback((credentials) => {
-    // Replace with real API call
-    const mockUser = { id: 1, name: 'Admin', email: credentials.email, role: 'admin' }
-    localStorage.setItem('auth_user', JSON.stringify(mockUser))
-    setUser(mockUser)
+  const login = useCallback((userData) => {
+    localStorage.setItem(
+      'auth_user',
+      JSON.stringify(userData)
+    )
+
+    setUser(userData)
   }, [])
 
   const logout = useCallback(() => {

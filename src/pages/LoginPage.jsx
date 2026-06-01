@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-
+import { useState, useEffect } from 'react'
 import {
   Alert,
   Box,
@@ -39,10 +38,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
 
   // redirect jika sudah login
-  if (isAuthenticated) {
-    navigate(from, { replace: true })
-    return null
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true })
+    }
+  }, [isAuthenticated, navigate, from])
 
   function handleChange(e) {
     setForm((prev) => ({
@@ -64,13 +64,25 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      await new Promise((r) => setTimeout(r, 800))
+      const response = await fetch(
+        'http://127.0.0.1:8000/api/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        }
+      )
+      const data = await response.json()
 
-      if (form.password.length < 4) {
-        throw new Error('Invalid credentials')
+      if (!response.ok) {
+        throw new Error(
+          data.message || 'Login gagal'
+        )
       }
 
-      login(form)
+      login(data.user)
 
       navigate(from, { replace: true })
     } catch (err) {

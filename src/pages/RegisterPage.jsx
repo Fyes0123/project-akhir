@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Typography,
@@ -10,14 +11,15 @@ import {
 import { Password } from '@mui/icons-material'
 
 export default function RegisterPage() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     fullname: '',
     email: '',
     Password: '',
     phone: '',
     business: '',
-    address : '',
-    role : 'borrower' ,
+    address: '',
+    role: 'borrower',
     description: '',
   })
 
@@ -29,160 +31,153 @@ export default function RegisterPage() {
   }
 
   async function handleSubmit(e) {
-  e.preventDefault()
+    e.preventDefault()
 
-  try {
-    const response = await fetch(
-      'http://127.0.0.1:8000/api/register',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
+    try {
+      const response = await fetch(
+        'http://127.0.0.1:8000/api/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        }
+      )
+
+      const data = await response.json()
+
+      console.log("FULL RESPONSE:", data)
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Register gagal')
       }
-    )
 
-const data = await response.json()
+      console.log("USER:", data.user)
 
-console.log("FULL RESPONSE:", data)
+      alert('Register berhasil!')
 
-if (!response.ok) {
-  throw new Error(data.error || 'Register gagal')
-}
+      navigate('/login')
 
-console.log("USER:", data.user)
-
-localStorage.setItem(
-  'nasabah_data',
-  JSON.stringify(data.user)
-)
-
-console.log(
-  "Stored:",
-  localStorage.getItem('nasabah_data')
-)
-
-  } catch (error) {
-    console.error(error)
-    alert('Register gagal!')
+    } catch (error) {
+      console.error(error)
+      alert('Register gagal!')
+    }
   }
-}
-
-  return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        bgcolor: '#f5f5f5',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        p: 4,
-      }}
-    >
-      <Card
+    return (
+      <Box
         sx={{
-          width: '100%',
-          maxWidth: 700,
-          p: 5,
-          borderRadius: 4,
+          minHeight: '100vh',
+          bgcolor: '#f5f5f5',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: 4,
         }}
       >
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          mb={4}
-          textAlign="center"
+        <Card
+          sx={{
+            width: '100%',
+            maxWidth: 700,
+            p: 5,
+            borderRadius: 4,
+          }}
         >
-          Register Nasabah
-        </Typography>
+          <Typography
+            variant="h4"
+            fontWeight={700}
+            mb={4}
+            textAlign="center"
+          >
+            Register Nasabah
+          </Typography>
 
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
 
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Nama Lengkap"
-                name="fullName"
-                onChange={handleChange}
-              />
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Nama Lengkap"
+                  name="fullName"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  name="password"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Nomor HP"
+                  name="phone"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Nama Usaha"
+                  name="business"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Alamat"
+                  name="address"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4}
+                  label="Deskripsi Usaha"
+                  name="description"
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="success"
+                  sx={{
+                    py: 1.5,
+                    fontWeight: 700,
+                  }}
+                >
+                  Register
+                </Button>
+              </Grid>
+
             </Grid>
-
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Email"
-                name="email"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Password"
-                name="password"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Nomor HP"
-                name="phone"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Nama Usaha"
-                name="business"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Alamat"
-                name="address"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                label="Deskripsi Usaha"
-                name="description"
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="success"
-                sx={{
-                  py: 1.5,
-                  fontWeight: 700,
-                }}
-              >
-                Register
-              </Button>
-            </Grid>
-
-          </Grid>
-        </form>
-      </Card>
-    </Box>
-  )
-}
+          </form>
+        </Card>
+      </Box>
+    )
+  }
