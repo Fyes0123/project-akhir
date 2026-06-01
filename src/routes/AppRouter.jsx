@@ -13,7 +13,7 @@ import ListNasabah from '@/pages/Admin/ListNasabah'
 import ListPinjaman from '@/pages/Admin/ListPeminjaman'
 import LoanApplication from '@/pages/Admin/LoanApplication'
 import LandingPage from '@/pages/LandingPage'
-import NasabahCard from '@/pages/Nasabah/NasabahCard'
+import NasabahCard from '@/pages/Card/NasabahCard'
 import RegisterPage from '@/pages/RegisterPage'
 
 

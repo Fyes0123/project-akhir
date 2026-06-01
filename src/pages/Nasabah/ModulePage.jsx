@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { useNavigate } from 'react-router-dom'
 
 const modules = [
   {
@@ -32,7 +33,10 @@ const modules = [
 ];
 
 export default function ModulePage() {
+  const navigate = useNavigate()
+
   return (
+
     <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", p: 4 }}>
 
       {/* Header */}
@@ -127,7 +131,7 @@ export default function ModulePage() {
               color: "black",
               fontWeight: 700,
               px: 4,
-            }}
+            }} onClick={() => navigate('/dashboardnasabah')}  
           >
             Go Back
           </Button>
