@@ -13,13 +13,7 @@ import ListNasabah from '@/pages/Admin/ListNasabah'
 import ListPinjaman from '@/pages/Admin/ListPeminjaman'
 import LoanApplication from '@/pages/Admin/LoanApplication'
 import LandingPage from '@/pages/LandingPage'
-<<<<<<< HEAD
 import VerificationPage from '@/pages/Admin/VerificationPage';
-=======
-import NasabahCard from '@/pages/Card/NasabahCard'
-import RegisterPage from '@/pages/RegisterPage'
-
->>>>>>> e115f9582f19bc234d30e19a621da400fb544a1d
 
 import DashboardSuperadmin from '../pages/Superadmin/DashboardSuperadmin'
 import ListPinjamanSuperadmin from '../pages/Superadmin/ListPinjamanSuperadmin'
