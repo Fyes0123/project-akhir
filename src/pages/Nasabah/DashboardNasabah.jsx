@@ -27,9 +27,12 @@ export default function DashboardNasabah() {
   // simulasi status pinjaman
   const [hasLoanApplication, setHasLoanApplication] = useState(false)
 
-  const nasabahData = JSON.parse(
-  localStorage.getItem('nasabah_data')
-)
+  const storedData = localStorage.getItem('nasabah_data')
+  
+  const nasabahData = storedData
+  ? JSON.parse(storedData)
+  : null
+  console.log(nasabahData)
 
   function handleCommunityAccess() {
     if (!hasLoanApplication) {

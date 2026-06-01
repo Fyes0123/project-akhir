@@ -20,7 +20,7 @@ export default function NasabahCard({ user }) {
         fontWeight={700}
         mb={4}
       >
-        Welcome, {user?.fullName || 'Nasabah'}
+        Welcome, {user?.full_name || 'Nasabah'}
       </Typography>
 
       <Grid container spacing={4} alignItems="center">
@@ -48,8 +48,8 @@ export default function NasabahCard({ user }) {
               lineHeight: 1.8,
             }}
           >
-            {user?.description ||
-              'Belum ada deskripsi pengguna'}
+            {user?.business_type ||
+            'Belum ada deskripsi usaha'}
           </Typography>
 
           <Typography mt={2}>
@@ -57,11 +57,11 @@ export default function NasabahCard({ user }) {
           </Typography>
 
           <Typography>
-            <strong>Phone:</strong> {user?.phone}
+            <strong>Phone:</strong> {user?.phone_number}
           </Typography>
 
           <Typography>
-            <strong>Business:</strong> {user?.business}
+            <strong>Business:</strong> {user?.business_name}
           </Typography>
         </Grid>
       </Grid>
