@@ -47,6 +47,15 @@ export default function ApplyLoanPage() {
   function handleSubmit(e) {
     e.preventDefault()
 
+    if (
+  Object.values(form).some(
+    value => value === '' || value === null || value === undefined
+  )
+) {
+  setError('Please fill in all fields.')
+  return
+}
+
     console.log(form)
 
     alert('Loan application submitted successfully!')
