@@ -1,312 +1,137 @@
-import PeopleIcon from '@mui/icons-material/People'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import AssignmentIcon from '@mui/icons-material/Assignment'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
-import { useNavigate } from 'react-router-dom'
+const DashboardAdmin = () => {
+  const navigate = useNavigate();
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  Stack,
-} from '@mui/material'
+  const [stats] = useState({
+    totalNasabah: localStorage.getItem('totalNasabah') || '120',
+    pengajuanAktif: '33', 
+    laporanDiterima: '150+',
+  });
 
-export default function DashboardAdmin() {
-  const navigate = useNavigate()
+  // Membaca data dari laci localStorage yang sama dengan Loan Application
+  const [monitoringData, setMonitoringData] = useState([]);
+
+  useEffect(() => {
+    const localData = localStorage.getItem('listStatusDaftarAdmin');
+    if (localData) {
+      setMonitoringData(JSON.parse(localData));
+    } else {
+      // Data awal backup jika localStorage belum terbentuk
+      const initialLoansData = [
+        { id: 101, name: "Ibu Aminah - UMKM Keripik", purpose: "Modal Bahan Baku", amount: 5000000, tenor: "12 Bulan", status: "Pending" },
+        { id: 102, name: "Ibu Siti - Tenun Ikat", purpose: "Beli Alat Tenun Baru", amount: 8000000, tenor: "24 Bulan", status: "Pending" },
+        { id: 103, name: "Ibu Fatimah - Warung Kelontong", purpose: "Restock Sembako", amount: 3500000, tenor: "6 Bulan", status: "Pending" },
+        { id: 104, name: "Ibu Rahma - Konveksi Rumahan", purpose: "Beli Mesin Jahit Obras", amount: 12000000, tenor: "18 Bulan", status: "Pending" },
+        { id: 105, name: "Ibu Khadijah - Budidaya Lele", purpose: "Pembuatan Kolam Terpal", amount: 4500000, tenor: "12 Bulan", status: "Pending" },
+        { id: 106, name: "Ibu Maryam - Katering Rumahan", purpose: "Beli Alat Masak & Gas", amount: 7000000, tenor: "12 Bulan", status: "Pending" },
+      ];
+      localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(initialLoansData));
+      setMonitoringData(initialLoansData);
+    }
+  }, []);
+
+  const colors = {
+    amarthaDark: "#034425",
+    amarthaLight: "#a3cfbb",
+    bgGray: "#f8fafc",
+    textMain: "#0f172a",
+    textMuted: "#64748b"
+  };
+
+  const styles = {
+    wrapper: { backgroundColor: colors.bgGray, minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif" },
+    container: { flex: 1, maxWidth: "1300px", width: "100%", margin: "30px auto", padding: "0 20px", display: "grid", gridTemplateColumns: "350px 1fr", gap: "25px" },
+    leftPanel: { display: "flex", flexDirection: "column", gap: "20px" },
+    cardMetric: { backgroundColor: "#ffffff", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", gap: "10px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" },
+    metricLabel: { fontSize: "14px", fontWeight: "600", color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px" },
+    metricValue: { fontSize: "36px", fontWeight: "800", color: colors.amarthaDark },
+    rightPanel: { display: "flex", flexDirection: "column", gap: "25px" },
+    sectionTitle: { fontSize: "20px", fontWeight: "700", color: colors.textMain, marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" },
+    tableBox: { backgroundColor: "#ffffff", borderRadius: "16px", border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" },
+    table: { width: "100%", borderCollapse: "collapse", textAlign: "left" },
+    th: { backgroundColor: "#f8fafc", padding: "15px 20px", fontSize: "13px", fontWeight: "700", color: colors.textMuted, borderBottom: "1px solid #e2e8f0" },
+    td: { padding: "18px 20px", fontSize: "14px", color: colors.textMain, borderBottom: "1px solid #f1f5f9" },
+    badge: (status) => ({
+      padding: "5px 10px", borderRadius: "6px", fontSize: "12px", fontWeight: "700",
+      backgroundColor: status === "Diteruskan" ? "#dcfce7" : status === "Perbaikan" ? "#ffe4e6" : status === "Disetujui Superadmin" ? "#e0f2fe" : status === "Ditolak Superadmin" ? "#fee2e2" : "#fef3c7",
+      color: status === "Diteruskan" ? "#16a34a" : status === "Perbaikan" ? "#e11d48" : status === "Disetujui Superadmin" ? "#0369a1" : status === "Ditolak Superadmin" ? "#991b1b" : "#d97706",
+    }),
+    btnAction: { backgroundColor: colors.amarthaDark, color: "white", border: "none", padding: "8px 14px", borderRadius: "6px", cursor: "pointer", fontWeight: "600", fontSize: "12px" },
+    menuGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" },
+    menuItem: { backgroundColor: colors.amarthaDark, color: "white", padding: "15px 10px", borderRadius: "12px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", transition: "transform 0.2s", textAlign: "center" }
+  };
 
   return (
-    <Box>
-      {/* NAVBAR */}
-      <AppBar position="static" sx={{ bgcolor: '#0b3d2e' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography fontWeight={700}>
-            Amartha Empower
-          </Typography>
+    <div style={styles.wrapper}>
+      <Navbar />
+      <div style={styles.container}>
+        {/* SIDEBAR KIRI */}
+        <div style={styles.leftPanel}>
+          <div style={{marginBottom: "10px"}}>
+            <h2 style={{margin: 0, fontSize: "24px", color: colors.amarthaDark}}>Admin Lapangan</h2>
+            <p style={{margin: "4px 0 0 0", fontSize: "13px", color: colors.textMuted}}>Wilayah Kerja: Sektor Barat</p>
+          </div>
+          <div style={styles.cardMetric}><span style={styles.metricLabel}>Total Nasabah</span><div style={styles.metricValue}>{stats.totalNasabah}</div></div>
+          <div style={styles.cardMetric}><span style={styles.metricLabel}>Pengajuan Aktif</span><div style={{...styles.metricValue, color: "#d97706"}}>{stats.pengajuanAktif}</div></div>
+          <div style={styles.cardMetric}><span style={styles.metricLabel}>Laporan Diterima</span><div style={{...styles.metricValue, color: "#64748b"}}>{stats.laporanDiterima}</div></div>
+          
+          <div style={{marginTop: "10px"}}>
+             <span style={styles.metricLabel}>Menu Cepat</span>
+             <div style={{...styles.menuGrid, marginTop: "10px"}}>
+                <div style={styles.menuItem} onClick={() => navigate('/listnasabah')}>👥 <span style={{fontSize: "12px", fontWeight: "600"}}>Nasabah Management</span></div>
+                <div style={styles.menuItem} onClick={() => navigate('/loanapply')}>📝 <span style={{fontSize: "12px", fontWeight: "600"}}>Pengajuan Pinjaman</span></div>
+             </div>
+          </div>
+        </div>
 
-          <Stack direction="row" spacing={2}>
-            <Button
-              onClick={() => navigate('/admin')}
-              color="success"
-              variant="contained"
-            >
-              Dashboard
-            </Button>
+        {/* TABEL RANGKUMAN UTAMA */}
+        <div style={styles.rightPanel}>
+          <div>
+            <h3 style={styles.sectionTitle}>📊 Monitoring UMKM (Status Berkas)</h3>
+            <div style={styles.tableBox}>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.th}>NAMA MITRA</th>
+                    <th style={styles.th}>NOMINAL</th>
+                    <th style={styles.th}>STATUS BERKAS</th>
+                    <th style={styles.th}>AKSI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {monitoringData.map((item) => (
+                    <tr key={item.id}>
+                      <td style={styles.td}><strong>{item.name || item.nama}</strong></td>
+                      <td style={styles.td}>Rp {(item.amount || 0).toLocaleString('id-ID')}</td>
+                      <td style={styles.td}>
+                        <span style={styles.badge(item.status)}>
+                          {item.status === "Diteruskan" ? "✓ Diteruskan" : 
+                           item.status === "Perbaikan" ? "⚠️ Perbaikan" : 
+                           item.status === "Disetujui Superadmin" ? "💰 Cair" :
+                           item.status === "Ditolak Superadmin" ? "❌ Ditolak" : item.status}
+                        </span>
+                      </td>
+                      <td style={styles.td}>
+                        <button style={styles.btnAction} onClick={() => navigate('/loanapply')}>
+                          Detail Berkas
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-            <Button
-              onClick={() => navigate('/admin/nasabah')}
-              color="success"
-              variant="contained"
-            >
-              User Management
-            </Button>
+      </div>
+      <Footer />
+    </div>
+  );
+};
 
-            <Button
-              onClick={() => navigate('/admin/pinjaman')}
-              color="success"
-              variant="contained"
-            >
-              Pengajuan
-            </Button>
-          </Stack>
-        </Toolbar>
-      </AppBar>
-
-      {/* HERO SECTION */}
-      <Box
-        sx={{
-          bgcolor: '#b7e4c7',
-          p: 4,
-        }}
-      >
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          mb={2}
-        >
-          Dashboard Admin
-        </Typography>
-
-        <Typography variant="body1">
-          Kelola data nasabah, pengajuan pinjaman,
-          serta monitoring perkembangan UMKM
-          melalui dashboard admin Amartha Empower.
-        </Typography>
-      </Box>
-
-      {/* STATISTIC CARD */}
-      <Box sx={{ p: 4 }}>
-        <Grid container spacing={3}>
-          {/* TOTAL USER */}
-          <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                bgcolor: '#84cc16',
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Box>
-                    <Typography variant="h6">
-                      Total Nasabah
-                    </Typography>
-
-                    <Typography
-                      variant="h4"
-                      fontWeight={700}
-                    >
-                      120
-                    </Typography>
-                  </Box>
-
-                  <PeopleIcon sx={{ fontSize: 50 }} />
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* TOTAL PENGAJUAN */}
-          <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                bgcolor: '#84cc16',
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Box>
-                    <Typography variant="h6">
-                      Pengajuan Aktif
-                    </Typography>
-
-                    <Typography
-                      variant="h4"
-                      fontWeight={700}
-                    >
-                      25
-                    </Typography>
-                  </Box>
-
-                  <AssignmentIcon sx={{ fontSize: 50 }} />
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* TOTAL PINJAMAN */}
-          <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                bgcolor: '#84cc16',
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Box>
-                    <Typography variant="h6">
-                      Progress UMKM
-                    </Typography>
-
-                    <Typography
-                      variant="h4"
-                      fontWeight={700}
-                    >
-                      75%
-                    </Typography>
-                  </Box>
-
-                  <TrendingUpIcon sx={{ fontSize: 50 }} />
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* MENU SECTION */}
-      <Box sx={{ p: 4 }}>
-        <Typography
-          variant="h5"
-          fontWeight={700}
-          mb={3}
-        >
-          Management Menu
-        </Typography>
-
-        <Grid container spacing={3}>
-          {/* USER MANAGEMENT */}
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                bgcolor: '#65a30d',
-                color: 'white',
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                  mb={2}
-                >
-                  User Management
-                </Typography>
-
-                <Typography mb={3}>
-                  Kelola seluruh data nasabah dan
-                  informasi pengguna.
-                </Typography>
-
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() =>
-                    navigate('/listnasabah')
-                  }
-                >
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* PENGAJUAN */}
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                bgcolor: '#65a30d',
-                color: 'white',
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                  mb={2}
-                >
-                  Pengajuan Pinjaman
-                </Typography>
-
-                <Typography mb={3}>
-                  Periksa dan validasi pengajuan
-                  pinjaman dari UMKM.
-                </Typography>
-
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() =>
-                    navigate('/loanapply')
-                  }
-                >
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* FOOTER */}
-      <Box
-        sx={{
-          bgcolor: '#0b3d2e',
-          color: 'white',
-          p: 4,
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Typography fontWeight={600}>
-              Amartha Empower
-            </Typography>
-
-            <Typography variant="body2">
-              Jl. Eaa, Kecamatan Uwaw, Kota Duar,
-              Provinsi Adadeh
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Typography>Contact</Typography>
-
-            <Typography variant="body2">
-              Mail To Us
-            </Typography>
-
-            <Typography variant="body2">
-              Chat To Us
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Box mt={3} textAlign="center">
-          <Typography variant="caption">
-            © 2025 Amartha Empower Company.
-            All Right Reserved
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
-  )
-}
+export default DashboardAdmin;

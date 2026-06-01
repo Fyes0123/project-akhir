@@ -16,12 +16,14 @@ import LandingPage from '@/pages/LandingPage'
 import NasabahCard from '@/pages/Card/NasabahCard'
 import RegisterPage from '@/pages/RegisterPage'
 
+import VerificationPage from '@/pages/Admin/VerificationPage';
 
 import DashboardSuperadmin from '../pages/Superadmin/DashboardSuperadmin'
 import ListPinjamanSuperadmin from '../pages/Superadmin/ListPinjamanSuperadmin'
 import DetailPengajuanSuperadmin from '../pages/Superadmin/DetailPengajuanSuperadmin'
-import ListNasabahSuperadmin from '../pages/Superadmin/ListNasabahSuperadmin'
+import ListNasabahSuperadmin from "../pages/Admin/ListNasabah"
 import LaporanSuperadmin from '../pages/Superadmin/LaporanSuperadmin'
+import PersetujuanSuperadmin from "../pages/Superadmin/PersetujuanSuperadmin";
 
 export default function AppRouter() {
   return (
@@ -37,6 +39,7 @@ export default function AppRouter() {
           <Route path="/superadmin/list-nasabah" element={<ListNasabahSuperadmin />} />
           <Route path="/superadmin/laporan" element={<LaporanSuperadmin />} />
           <Route path="/superadmin/detail-pengajuan" element={<DetailPengajuanSuperadmin />} />
+          <Route path="/superadmin/verifikasi" element={<PersetujuanSuperadmin />} />
 
         {/* ==================== PROTECTED ROUTES ==================== */}
         <Route element={<ProtectedRoute />}>
@@ -56,6 +59,7 @@ export default function AppRouter() {
             <Route path="/listnasabah" element={<ListNasabah />} />
             <Route path="/listpinjaman" element={<ListPinjaman />} />
             <Route path="/loanapply" element={<LoanApplication />} />
+            <Route path="/admin/verification" element={<VerificationPage />} />
           </Route>
         </Route>
 
