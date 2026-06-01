@@ -1,50 +1,223 @@
-import React from "react";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Card,
+  Chip,
+  Divider,
+  List,
+  ListItemButton,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from '@mui/material'
 
-const users = [
-  "Andrew",
-  "Jessica",
-  "Michael",
-  "Amanda",
-  "Jonathan",
-  "William",
-  "Sarah",
-  "Daniel",
-  "Sophia",
-];
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import CampaignIcon from '@mui/icons-material/Campaign'
+import PaymentsIcon from '@mui/icons-material/Payments'
+import VerifiedIcon from '@mui/icons-material/Verified'
+import SupportAgentIcon from '@mui/icons-material/SupportAgent'
+
+const inboxData = [
+  {
+    id: 1,
+    category: 'Loan Status',
+    title: 'Loan Application Approved',
+    message:
+      'Congratulations! Your loan application has been approved.',
+    time: '10 min ago',
+    unread: true,
+    color: 'success',
+    icon: <VerifiedIcon />,
+  },
+  {
+    id: 2,
+    category: 'Payment Reminder',
+    title: 'Installment Due Tomorrow',
+    message:
+      'Your next installment payment is due tomorrow.',
+    time: '1 hour ago',
+    unread: true,
+    color: 'warning',
+    icon: <PaymentsIcon />,
+  },
+  {
+    id: 3,
+    category: 'Community',
+    title: 'New UMKM Webinar Available',
+    message:
+      'Join our free business growth webinar this weekend.',
+    time: 'Yesterday',
+    unread: false,
+    color: 'info',
+    icon: <CampaignIcon />,
+  },
+  {
+    id: 4,
+    category: 'Admin',
+    title: 'Document Verification Complete',
+    message:
+      'Your uploaded documents have been successfully verified.',
+    time: '2 days ago',
+    unread: false,
+    color: 'primary',
+    icon: <SupportAgentIcon />,
+  },
+]
 
 export default function InboxPage() {
+  const unreadCount = inboxData.filter(
+    (item) => item.unread
+  ).length
+
   return (
-    <div className="min-h-screen bg-gray-200 flex justify-center p-6">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-md p-5">
-        <div className="bg-green-700 text-white text-center py-2 rounded font-bold mb-5">
-          Talking
-        </div>
+    <Box
+      sx={{
+        bgcolor: '#f8fafc',
+        minHeight: '100vh',
+        p: 4,
+      }}
+    >
+      {/* Header */}
+      <Card
+        sx={{
+          p: 3,
+          borderRadius: 4,
+          mb: 3,
+          boxShadow: 2,
+        }}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={2}
+        >
+          <Badge
+            badgeContent={unreadCount}
+            color="error"
+          >
+            <NotificationsIcon
+              sx={{
+                fontSize: 35,
+                color: '#15803d',
+              }}
+            />
+          </Badge>
 
-        <div className="space-y-2">
-          {users.map((name, index) => (
-            <div
-              key={index}
-              className="flex justify-between items-center border-b py-2"
+          <Box>
+            <Typography
+              variant="h4"
+              fontWeight={700}
             >
-              <span>{name}</span>
+              Inbox
+            </Typography>
 
-              <button className="text-green-700 hover:underline font-semibold">
-                Answer
-              </button>
-            </div>
+            <Typography
+              color="text.secondary"
+            >
+              Stay updated with your loan,
+              payments, and community activities.
+            </Typography>
+          </Box>
+        </Box>
+      </Card>
+
+      {/* Inbox List */}
+      <Card
+        sx={{
+          borderRadius: 4,
+          overflow: 'hidden',
+          boxShadow: 2,
+        }}
+      >
+        <List disablePadding>
+          {inboxData.map((item, index) => (
+            <Box key={item.id}>
+              <ListItemButton
+                sx={{
+                  py: 2.5,
+                  px: 3,
+
+                  '&:hover': {
+                    bgcolor: '#f1f5f9',
+                  },
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{
+                      bgcolor: `${item.color}.main`,
+                    }}
+                  >
+                    {item.icon}
+                  </Avatar>
+                </ListItemAvatar>
+
+                <ListItemText
+                  primary={
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography
+                        fontWeight={
+                          item.unread
+                            ? 700
+                            : 500
+                        }
+                      >
+                        {item.title}
+                      </Typography>
+
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                      >
+                        {item.time}
+                      </Typography>
+                    </Box>
+                  }
+                  secondary={
+                    <>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.5 }}
+                      >
+                        {item.message}
+                      </Typography>
+
+                      <Chip
+                        size="small"
+                        label={item.category}
+                        color={item.color}
+                        sx={{ mt: 1 }}
+                      />
+                    </>
+                  }
+                />
+
+                {item.unread && (
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      bgcolor: '#ef4444',
+                      borderRadius: '50%',
+                      ml: 2,
+                    }}
+                  />
+                )}
+              </ListItemButton>
+
+              {index !== inboxData.length - 1 && (
+                <Divider />
+              )}
+            </Box>
           ))}
-        </div>
-
-        <div className="flex justify-between mt-6">
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
-            Proceed
-          </button>
-
-          <button className="bg-lime-500 hover:bg-lime-600 px-4 py-2 rounded font-semibold">
-            Go Back
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+        </List>
+      </Card>
+    </Box>
+  )
 }

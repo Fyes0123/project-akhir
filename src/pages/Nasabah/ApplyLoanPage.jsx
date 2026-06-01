@@ -1,204 +1,350 @@
-import React from "react";
+import { useState } from 'react'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 export default function ApplyLoanPage() {
+  const [form, setForm] = useState({
+    fullName: '',
+    phone: '',
+    address: '',
+    income: '',
+    expenses: '',
+    loanAmount: '',
+    paymentPeriod: '',
+    purpose: '',
+    ktp: null,
+    selfie: null,
+    businessInfo: null,
+    businessLicense: null,
+    npwp: null,
+  })
+
+  function handleChange(e) {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  function handleFileChange(e) {
+    const { name, files } = e.target
+
+    setForm({
+      ...form,
+      [name]: files[0],
+    })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    console.log(form)
+
+    alert('Loan application submitted successfully!')
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      
-      {/* CONTAINER */}
-      <div className="max-w-3xl mx-auto">
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: '#f4f6f8',
+        py: 6,
+      }}
+    >
+      <Container maxWidth="md">
+        <Card
+          sx={{
+            borderRadius: 4,
+            boxShadow: 6,
+          }}
+        >
+          <CardContent sx={{ p: 5 }}>
+            {/* Header */}
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              textAlign="center"
+              color="success.main"
+              mb={1}
+            >
+              Loan Application
+            </Typography>
 
-        {/* HEADER CARD */}
-        <div className="bg-green-900 text-white rounded-t-xl p-6 shadow-lg">
-          <h1 className="text-4xl font-bold">
-            Loan Application
-          </h1>
+            <Typography
+              variant="body1"
+              textAlign="center"
+              color="text.secondary"
+              mb={5}
+            >
+              Complete the form below to apply for a business loan.
+            </Typography>
 
-          <p className="mt-2 text-green-100">
-            Lengkapi formulir berikut untuk mengajukan pinjaman usaha.
-          </p>
-        </div>
+            <Box component="form" onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                {/* Full Name */}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Full Name"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-        {/* FORM CARD */}
-        <div className="bg-white rounded-b-xl shadow-lg p-8 space-y-8">
+                {/* Phone */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-          {/* PERSONAL INFORMATION */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
-              Personal Information
-            </h2>
+                {/* Address */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    name="address"
+                    value={form.address}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-            <div className="grid md:grid-cols-2 gap-5">
+                {/* Income */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Average Monthly Income"
+                    name="income"
+                    type="number"
+                    value={form.income}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Full Name
-                </label>
+                {/* Expenses */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Average Monthly Expenses"
+                    name="expenses"
+                    type="number"
+                    value={form.expenses}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                {/* Loan Amount */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Loan Amount Requested"
+                    name="loanAmount"
+                    type="number"
+                    value={form.loanAmount}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Phone Number
-                </label>
+                {/* Payment Period */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Preferred Payment Period"
+                    name="paymentPeriod"
+                    placeholder="e.g. 12 Months"
+                    value={form.paymentPeriod}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-                <input
-                  type="text"
-                  placeholder="08xxxxxxxxxx"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                {/* Purpose */}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={4}
+                    label="Purpose of the Loan"
+                    name="purpose"
+                    value={form.purpose}
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Email
-                </label>
+                {/* Upload Files */}
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    mb={2}
+                    mt={2}
+                  >
+                    Required Documents
+                  </Typography>
+                </Grid>
 
-                <input
-                  type="email"
-                  placeholder="example@email.com"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                {/* KTP */}
+                <Grid item xs={12} md={6}>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    fullWidth
+                    color="success"
+                  >
+                    Upload National ID / KTP
+                    <input
+                      hidden
+                      type="file"
+                      name="ktp"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Employer Name
-                </label>
+                  {form.ktp && (
+                    <Typography mt={1} variant="body2">
+                      {form.ktp.name}
+                    </Typography>
+                  )}
+                </Grid>
 
-                <input
-                  type="text"
-                  placeholder="Your business/company"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                {/* Selfie */}
+                <Grid item xs={12} md={6}>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    fullWidth
+                    color="success"
+                  >
+                    Upload Selfie With ID
+                    <input
+                      hidden
+                      type="file"
+                      name="selfie"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
-            </div>
-          </div>
+                  {form.selfie && (
+                    <Typography mt={1} variant="body2">
+                      {form.selfie.name}
+                    </Typography>
+                  )}
+                </Grid>
 
-          {/* LOAN INFORMATION */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
-              Loan Information
-            </h2>
+                {/* Business Info */}
+                <Grid item xs={12} md={6}>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    fullWidth
+                    color="success"
+                  >
+                    Upload Business Information
+                    <input
+                      hidden
+                      type="file"
+                      name="businessInfo"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
-            <div className="grid md:grid-cols-2 gap-5">
+                  {form.businessInfo && (
+                    <Typography mt={1} variant="body2">
+                      {form.businessInfo.name}
+                    </Typography>
+                  )}
+                </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Monthly Income
-                </label>
+                {/* Business License */}
+                <Grid item xs={12} md={6}>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    fullWidth
+                    color="success"
+                  >
+                    Upload Business License
+                    <input
+                      hidden
+                      type="file"
+                      name="businessLicense"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
-                <input
-                  type="text"
-                  placeholder="Rp 5.000.000"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                  {form.businessLicense && (
+                    <Typography mt={1} variant="body2">
+                      {form.businessLicense.name}
+                    </Typography>
+                  )}
+                </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Loan Amount
-                </label>
+                {/* NPWP */}
+                <Grid item xs={12}>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    fullWidth
+                    color="success"
+                  >
+                    Upload NPWP
+                    <input
+                      hidden
+                      type="file"
+                      name="npwp"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
-                <input
-                  type="text"
-                  placeholder="Rp 10.000.000"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
+                  {form.npwp && (
+                    <Typography mt={1} variant="body2">
+                      {form.npwp.name}
+                    </Typography>
+                  )}
+                </Grid>
+              </Grid>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Repayment Period
-                </label>
-
-                <select
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+              {/* Buttons */}
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="space-between"
+                mt={5}
+              >
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  size="large"
                 >
-                  <option>3 Months</option>
-                  <option>6 Months</option>
-                  <option>12 Months</option>
-                </select>
-              </div>
+                  Go Back
+                </Button>
 
-              <div>
-                <label className="block mb-2 font-medium">
-                  Purpose of Loan
-                </label>
-
-                <input
-                  type="text"
-                  placeholder="Business Expansion"
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* DOCUMENT UPLOAD */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
-              Upload Documents
-            </h2>
-
-            <div className="space-y-5">
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  Upload KTP
-                </label>
-
-                <input
-                  type="file"
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  Upload Selfie
-                </label>
-
-                <input
-                  type="file"
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  Upload Income Proof
-                </label>
-
-                <input
-                  type="file"
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* BUTTONS */}
-          <div className="flex justify-end gap-4 pt-4">
-
-            <button className="px-6 py-3 rounded-lg bg-gray-300 hover:bg-gray-400 transition font-semibold">
-              Go Back
-            </button>
-
-            <button className="px-6 py-3 rounded-lg bg-lime-500 hover:bg-lime-600 text-white font-semibold transition">
-              Submit Application
-            </button>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  size="large"
+                >
+                  Submit Application
+                </Button>
+              </Stack>
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
+  )
 }
