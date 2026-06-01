@@ -61,4 +61,36 @@ public function show($id)
 
     return response()->json($user);
 }
+public function login(Request $request)
+{
+    $validated = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
+
+    $user = User::where(
+        'email',
+        $validated['email']
+    )->first();
+
+    if (!$user) {
+        return response()->json([
+            'message' => 'Email tidak ditemukan'
+        ], 401);
+    }
+
+    if (!Hash::check(
+        $validated['password'],
+        $user->password
+    )) {
+        return response()->json([
+            'message' => 'Password salah'
+        ], 401);
+    }
+
+    return response()->json([
+        'message' => 'Login berhasil',
+        'user' => $user
+    ]);
+}
 }
