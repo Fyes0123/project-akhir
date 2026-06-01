@@ -9,7 +9,7 @@ function ListNasabahSuperadmin() {
     { id: 1, nama: 'Sarah UMKM', statusTop: 'Aktif', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' },
     { id: 2, nama: 'Lara UMKM', statusTop: 'Aktif', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lara' },
     { id: 3, nama: 'Sinta UMKM', statusTop: 'Aktif', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sinta' },
-    { id: 4, nama: 'Joni UMKM', statusTop: 'Aktif', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Joni' },
+    { id: 4, nama: 'Karin UMKM', statusTop: 'Aktif', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Joni' },
   ];
 
   const styles = {

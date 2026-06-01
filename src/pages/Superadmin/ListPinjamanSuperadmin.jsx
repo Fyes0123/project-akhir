@@ -5,7 +5,6 @@ import LoanCard from '../../components/LoanCard';
 function ListPinjamanSuperadmin() {
   const navigate = useNavigate();
 
-  // 2. Data tiruan pinjaman (Simulasi data hasil tarikan input applyloan backend)
   const daftarPengajuanPinjaman = [
     { id: 1, nama_lengkap: 'Sarah UMKM', jumlah_pinjaman: 2000000 },
     { id: 2, nama_lengkap: 'Joni UMKM', jumlah_pinjaman: 2000000 },
