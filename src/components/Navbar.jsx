@@ -1,8 +1,11 @@
+import Button from '@mui/material/Button'
 import { styles } from "../styles/adminStyle";
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 
 function Navbar() {
+  const navigate = useNavigate()
+  const { logout } = useAuth()
 
   const handleLogout = () => {
     logout()

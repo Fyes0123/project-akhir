@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { useAuth } from '@/hooks/useAuth'
 
 const DashboardSuperadmin = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth()
 
   const handleLogout = () => {
     logout()
