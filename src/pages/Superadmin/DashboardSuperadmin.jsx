@@ -6,17 +6,32 @@ import Footer from '../../components/Footer';
 const DashboardSuperadmin = () => {
   const navigate = useNavigate();
   
-  // Ambil angka persetujuan secara dinamis dari localStorage
+  // State untuk menyimpan data monitoring dari localStorage
+  const [monitoringData, setMonitoringData] = useState([]);
   const [approvedCount, setApprovedCount] = useState(25);
 
   useEffect(() => {
+    // 1. Ambil data transaksi mitra untuk menghitung Total Nasabah secara dinamis
+    const localData = localStorage.getItem('listStatusDaftarAdmin');
+    if (localData) {
+      setMonitoringData(JSON.parse(localData));
+    }
+
+    // 2. Ambil angka persetujuan bawaan
     const savedCount = localStorage.getItem('approvedCount');
     if (savedCount) {
       setApprovedCount(parseInt(savedCount));
     } else {
-      localStorage.setItem('approvedCount', '25'); // Nilai default awal
+      localStorage.setItem('approvedCount', '25');
     }
   }, []);
+
+  const baseNasabah = 120;
+  const nasabahBaruCair = monitoringData.filter(
+    (item) => item.status === "Disetujui Superadmin" || item.status === "Cair"
+  ).length;
+  
+  const totalNasabahDinamis = baseNasabah + nasabahBaruCair;
 
   return (
     <div style={{
@@ -31,7 +46,6 @@ const DashboardSuperadmin = () => {
       {/* HEADER NAVBAR */}
       <Navbar />
 
-      {/* STRUKTUR UTAMA: SIDEBAR KIRI & KONTEN KANAN */}
       <div style={{
         display: "flex",
         flexDirection: "row",
@@ -40,7 +54,6 @@ const DashboardSuperadmin = () => {
         boxSizing: "border-box"
       }}>
         
-        {/* SIDEBAR KIRI (WARNA HIJAU TUA AMARTHA) */}
         <div style={{
           width: "260px",
           backgroundColor: "#034425",
@@ -66,7 +79,7 @@ const DashboardSuperadmin = () => {
             <span>🏠</span> Dashboard
           </div>
 
-          {/* Menu Navigasi Sisi Kiri - Sudah Diarahkan ke Page Baru */}
+          {/* Menu Navigasi Sisi Kiri */}
           <div 
             onClick={() => navigate('/superadmin/verifikasi')} 
             style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85, display: "flex", alignItems: "center", gap: "12px" }}
@@ -118,11 +131,11 @@ const DashboardSuperadmin = () => {
             width: "100%",
             flexWrap: "wrap"
           }}>
-            {/* Total Nasabah */}
+            {/* Total Nasabah (Sudah menggunakan variabel dinamis) */}
             <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#ffffff", borderRadius: "16px", padding: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div style={{ textAlign: "left" }}>
                 <span style={{ fontSize: "14px", color: "#64748b", fontWeight: "600" }}>Total Nasabah</span>
-                <p style={{ fontSize: "36px", fontWeight: "800", color: "#0f172a", margin: "4px 0 0 0" }}>120</p>
+                <p style={{ fontSize: "36px", fontWeight: "800", color: "#0f172a", margin: "4px 0 0 0" }}>{totalNasabahDinamis}</p>
               </div>
               <div style={{ fontSize: "40px", opacity: 0.2 }}>👥</div>
             </div>
@@ -146,7 +159,7 @@ const DashboardSuperadmin = () => {
             </div>
           </div>
 
-          {/* ⚡ 2. BARIS KARTU shortcut & PERINGATAN KPI */}
+          {/* ⚡ 2. BARIS KARTU SHORTCUT & PERINGATAN KPI */}
           <div style={{
             display: "flex",
             flexDirection: "row",
@@ -154,14 +167,13 @@ const DashboardSuperadmin = () => {
             width: "100%",
             flexWrap: "wrap"
           }}>
-            
-            {/* KARTU JALAN PINTAS VERIFIKASI (Pindahan dari sidebar agar layoutnya pas) */}
+            {/* KARTU JALAN PINTAS VERIFIKASI */}
             <div 
               onClick={() => navigate('/superadmin/verifikasi')}
               style={{
                 flex: "1",
                 minWidth: "300px",
-                backgroundColor: "#034425", // Menggunakan warna hijau tema utama agar serasi
+                backgroundColor: "#034425",
                 borderRadius: "16px",
                 padding: "28px",
                 cursor: "pointer",
