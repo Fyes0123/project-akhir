@@ -55,6 +55,10 @@ export default function LoanApplicationPage() {
       return
     }
 
+    setSuccessMessage(
+    'Pinjaman telah diajukan! Mohon tunggu review.'
+  )
+
     setError('')
     setStep(3)
   }

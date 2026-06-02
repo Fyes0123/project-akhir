@@ -42,7 +42,7 @@ export default function AppRouter() {
           <Route path="/superadmin/laporan" element={<LaporanSuperadmin />} />
           <Route path="/superadmin/detail-pengajuan" element={<DetailPengajuanSuperadmin />} />
           <Route path="/superadmin/verifikasi" element={<PersetujuanSuperadmin />} />
-
+<Route path="/inbox" element={<InboxPage />} />
         {/* ==================== PROTECTED ROUTES ==================== */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
@@ -53,7 +53,7 @@ export default function AppRouter() {
             <Route path="/" element={<Navigate to="/dashboardnasabah" replace />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/applyloan" element={<ApplyLoanPage />} />
-            <Route path="/inbox" element={<InboxPage />} />
+            
             <Route path="/chatinbox" element={<ChatInboxPage />} />
             <Route path="/module" element={<ModulePage />} />
             <Route path="/quiz" element={<Quiz />} />
