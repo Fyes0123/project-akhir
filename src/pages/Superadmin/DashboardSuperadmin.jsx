@@ -5,6 +5,14 @@ import Footer from '../../components/Footer';
 
 const DashboardSuperadmin = () => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout()
+
+    navigate('/login', {
+      replace: true,
+    })
+  }
   
   // Ambil angka persetujuan secara dinamis dari localStorage
   const [approvedCount, setApprovedCount] = useState(25);
@@ -81,6 +89,7 @@ const DashboardSuperadmin = () => {
           <div onClick={() => navigate('/superadmin/list-nasabah')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85, display: "flex", alignItems: "center", gap: "12px" }}>
             <span>👥</span> Nasabah Management
           </div>
+
 
           {/* Profil Singkat di Bawah Sidebar */}
           <div style={{ marginTop: "auto", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: "12px" }}>
