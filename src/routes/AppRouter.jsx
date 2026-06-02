@@ -19,7 +19,6 @@ import RegisterPage from '@/pages/RegisterPage'
 import Quiz from '@/pages/Nasabah/Quiz'
 
 import VerificationPage from '@/pages/Admin/VerificationPage';
-
 import DashboardSuperadmin from '../pages/Superadmin/DashboardSuperadmin'
 import ListPinjamanSuperadmin from '../pages/Superadmin/ListPinjamanSuperadmin'
 import DetailPengajuanSuperadmin from '../pages/Superadmin/DetailPengajuanSuperadmin'

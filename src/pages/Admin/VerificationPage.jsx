@@ -16,9 +16,6 @@ const VerifikasiBerkasAdmin = () => {
     // ==========================================
     const antreanLama = JSON.parse(localStorage.getItem('listPengajuanSuperadmin')) || [];
     
-    // Validasi agar tidak terjadi duplikasi data yang sama di laci Superadmin
-    const antreanTanpaDataIni = antreanLama.filter(item => item.nama !== currentLoan.name);
-
     const dataBungkusBaru = {
       id: `TX-${Math.floor(10000 + Math.random() * 90000)}`, // ID transaksi unik otomatis
       nama: currentLoan.name,
@@ -30,7 +27,7 @@ const VerifikasiBerkasAdmin = () => {
       statusFinal: "PENDING" // Set ke PENDING agar antrean di Superadmin menyala kuning
     };
     
-    const antreanTerbaru = [...antreanTanpaDataIni, dataBungkusBaru];
+    const antreanTerbaru = [...antreanLama, dataBungkusBaru];
     localStorage.setItem('listPengajuanSuperadmin', JSON.stringify(antreanTerbaru));
 
     // ==========================================
@@ -52,7 +49,7 @@ const VerifikasiBerkasAdmin = () => {
     // ALUR 3: NOTIFIKASI & NAVIGASI KEMBALI
     // ==========================================
     alert(`🚀 Sukses! Laporan kelayakan ${currentLoan.name} berhasil diteruskan ke antrean Superadmin.`);
-    navigate('/dashboardadmin'); // Diarahkan langsung ke dashboard admin utama agar tabel langsung ter-update
+    navigate(-1); // Otomatis balik ke halaman sebelumnya setelah sukses kirim
   };
 
   return (
@@ -213,51 +210,52 @@ const VerifikasiBerkasAdmin = () => {
         marginTop: "32px",
         boxSizing: "border-box"
       }}>
-        {/* TOMBOL KIRI (TOLAK & PERBAIKAN) */}
-        <button 
-          onClick={() => {
-            const catatan = prompt("Masukkan alasan koreksi perbaikan berkas untuk nasabah (misal: File KTP buram):");
-            
-            if (catatan !== null && catatan.trim() !== "") {
-              // 1. Update status internal list daftar admin menjadi "Perbaikan"
-              const listDaftarAdmin = JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
-              const updatedListAdmin = listDaftarAdmin.map(item => {
-                if (item.id === currentLoan.id) {
-                  return { 
-                    ...item, 
-                    status: "Perbaikan",
-                    catatanAdmin: catatan 
-                  };
-                }
-                return item;
-              });
-              localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(updatedListAdmin));
-              
-              // 2. Bersihkan/hapus data dari laci Superadmin jika sebelumnya pernah dikirim
-              const antreanSuperadmin = JSON.parse(localStorage.getItem('listPengajuanSuperadmin')) || [];
-              const filteredSuperadmin = antreanSuperadmin.filter(item => item.nama !== currentLoan.name);
-              localStorage.setItem('listPengajuanSuperadmin', JSON.stringify(filteredSuperadmin));
-              
-              alert(`Status: Berkas berhasil ditolak & dikembalikan ke Nasabah dengan catatan: "${catatan}"`);
-              navigate('/dashboardadmin'); // Kembali langsung ke dashboard utama
-            }
-          }}
-          style={{
-            flex: "1",
-            padding: "16px",
-            backgroundColor: "#fff5f5",
-            color: "#e11d48",
-            border: "2px solid #fca5a5",
-            borderRadius: "12px",
-            fontSize: "15px",
-            fontWeight: "700",
-            cursor: "pointer"
-          }}
-        >
-          ❌ Tolak & Ajukan Perbaikan Berkas Nasabah
-        </button>
+        {/* TOMBOL KIRI */}
+<button 
+  onClick={() => {
+    // 1. Munculkan kotak input catatan untuk admin
+    const catatan = prompt("Masukkan alasan koreksi perbaikan berkas untuk nasabah (misal: File KTP buram):");
+    
+    // Jika admin mengisi catatan (tidak klik cancel/kosong)
+    if (catatan) {
+      // 2. Ambil data list daftar milik admin dari localStorage
+      const listDaftarAdmin = JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
+      
+      // 3. Cari nasabah yang sedang aktif dan ubah statusnya menjadi "Perbaikan"
+      const updatedListAdmin = listDaftarAdmin.map(item => {
+        if (item.id === currentLoan.id) {
+          return { 
+            ...item, 
+            status: "Perbaikan",
+            catatanAdmin: catatan // Menyimpan catatan koreksi (opsional jika nanti mau ditampilkan)
+          };
+        }
+        return item;
+      });
+      
+      // 4. Simpan kembali ke localStorage
+      localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(updatedListAdmin));
+      
+      alert(`Status: Berkas berhasil ditolak & dikembalikan ke Nasabah dengan catatan: "${catatan}"`);
+      navigate(-1);
+    }
+  }}
+  style={{
+    flex: "1",
+    padding: "16px",
+    backgroundColor: "#fff5f5",
+    color: "#e11d48",
+    border: "2px solid #fca5a5",
+    borderRadius: "12px",
+    fontSize: "15px",
+    fontWeight: "700",
+    cursor: "pointer"
+  }}
+>
+  ❌ Tolak & Ajukan Perbaikan Berkas Nasabah
+</button>
 
-        {/* TOMBOL KANAN (TERIMA & TERUSKAN) */}
+        {/* TOMBOL KANAN */}
         <button 
           onClick={handleKirimKeSuperadmin}
           style={{

@@ -13,6 +13,9 @@ const LoanApplicationAdmin = () => {
     { id: 104, name: "Ibu Rahma - Konveksi Rumahan", purpose: "Beli Mesin Jahit Obras", amount: 12000000, tenor: "18 Bulan", status: "Pending" },
     { id: 105, name: "Ibu Khadijah - Budidaya Lele", purpose: "Pembuatan Kolam Terpal", amount: 4500000, tenor: "12 Bulan", status: "Pending" },
     { id: 106, name: "Ibu Maryam - Katering Rumahan", purpose: "Beli Alat Masak & Gas", amount: 7000000, tenor: "12 Bulan", status: "Pending" },
+    { id: 107, name: "Ibu Tini - Warung Makan", purpose: "Beli Bahan Masak, Gas, dan Sembako", amount: 10000000, tenor: "18 Bulan", status: "Pending" },
+    { id: 108, name: "Ibu Suharti - Lanudry Cuci Kering", purpose: "Beli Alat Laudry dan Perlengkapan Lainnya", amount: 6000000, tenor: "10 Bulan", status: "Pending" },
+    { id: 109, name: "Ibu Firda - Penjahit", purpose: "Beli Alat Menjahit dan Kain", amount: 15000000, tenor: "24 Bulan", status: "Pending" },
   ];
 
   const [loans, setLoans] = useState([]);
