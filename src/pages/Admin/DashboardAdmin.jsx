@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { useAuth } from '@/hooks/useAuth'
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
+  const { user } = useAuth()
 
   const [stats] = useState({
     totalNasabah: localStorage.getItem('totalNasabah') || '120',
