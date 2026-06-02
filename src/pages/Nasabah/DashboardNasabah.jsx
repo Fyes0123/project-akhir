@@ -36,7 +36,7 @@ export default function DashboardNasabah() {
       return
     }
 
-    navigate('/komunitas')
+    navigate('/community')
   }
 
   return (
