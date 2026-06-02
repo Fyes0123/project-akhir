@@ -35,16 +35,23 @@ export default function AppRouter() {
         <Route path='/landingpage' element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+          
+        {/* ==================== PROTECTED ROUTES ==================== */}
+        <Route element={<ProtectedRoute />}>
 
-          <Route path="/superadmin" element={<DashboardSuperadmin />} />
+            <Route path="/superadmin" element={<DashboardSuperadmin />} />
           <Route path="/superadmin/list-pinjaman" element={<ListPinjamanSuperadmin />} />
           <Route path="/superadmin/list-nasabah" element={<ListNasabahSuperadmin />} />
           <Route path="/superadmin/laporan" element={<LaporanSuperadmin />} />
           <Route path="/superadmin/detail-pengajuan" element={<DetailPengajuanSuperadmin />} />
           <Route path="/superadmin/verifikasi" element={<PersetujuanSuperadmin />} />
-<Route path="/inbox" element={<InboxPage />} />
-        {/* ==================== PROTECTED ROUTES ==================== */}
-        <Route element={<ProtectedRoute />}>
+
+          <Route path="/dashboardadmin" element={<DashboardAdmin />} />
+          <Route path="/listnasabah" element={<ListNasabah />} />
+          <Route path="/listpinjaman" element={<ListPinjaman />} />
+          <Route path="/loanapply" element={<LoanApplication />} />
+          <Route path="/admin/verification" element={<VerificationPage />} />
+
           <Route element={<MainLayout />}>
           
             {/* Nasabah */}
@@ -53,17 +60,13 @@ export default function AppRouter() {
             <Route path="/" element={<Navigate to="/dashboardnasabah" replace />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/applyloan" element={<ApplyLoanPage />} />
-            
+             <Route path="/inbox" element={<InboxPage />} />
             <Route path="/chatinbox" element={<ChatInboxPage />} />
             <Route path="/module" element={<ModulePage />} />
             <Route path="/quiz" element={<Quiz />} />
             
             {/* Admin */}
-            <Route path="/dashboardadmin" element={<DashboardAdmin />} />
-            <Route path="/listnasabah" element={<ListNasabah />} />
-            <Route path="/listpinjaman" element={<ListPinjaman />} />
-            <Route path="/loanapply" element={<LoanApplication />} />
-            <Route path="/admin/verification" element={<VerificationPage />} />
+            
           </Route>
         </Route>
 
