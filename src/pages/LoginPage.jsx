@@ -21,7 +21,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function LoginPage() {
-  const { login, isAuthenticated } = useAuth()
+  const { user, login, isAuthenticated } = useAuth()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -39,10 +39,18 @@ export default function LoginPage() {
 
   // redirect jika sudah login
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(from, { replace: true })
+    if (isAuthenticated && user) {
+      if (user.role === 'superadmin') {
+        navigate('/superadmin')
+      }
+      else if (user.role === 'admin') {
+        navigate('/dashboardadmin')
+      }
+      else {
+        navigate('/dashboardnasabah')
+      }
     }
-  }, [isAuthenticated, navigate, from])
+  }, [isAuthenticated, user, navigate])
 
   function handleChange(e) {
     setForm((prev) => ({
@@ -84,7 +92,6 @@ export default function LoginPage() {
 
       login(data.user)
 
-      navigate(from, { replace: true })
     } catch (err) {
       setError(err.message ?? 'Login failed')
     } finally {
