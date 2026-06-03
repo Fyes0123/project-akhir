@@ -404,6 +404,7 @@ export default function ApplyLoanPage() {
                     variant="contained"
                     color="success"
                     size="large"
+                    onClick={() => navigate('/module')}
                   >
                     Submit Application
                   </Button>

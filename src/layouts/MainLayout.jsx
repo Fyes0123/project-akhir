@@ -34,6 +34,10 @@ export default function MainLayout() {
       label: 'Komunitas',
       path: '/komunitas',
     },
+    {
+      label: 'Inbox',
+      path: '/inbox',
+    },
   ]
 
   // HANDLE LOGOUT
