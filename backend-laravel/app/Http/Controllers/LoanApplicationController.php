@@ -57,4 +57,19 @@ foreach ($documents as $doc) {
         'loan' => $loan
     ]);
 }
+public function index()
+{
+    return LoanApplication::with('user')->get();
+}
+public function update(Request $request, $id)
+{
+    $loan = LoanApplication::findOrFail($id);
+
+    $loan->update($request->only([
+        'status',
+        'admin_notes'
+    ]));
+
+    return response()->json($loan);
+}
 }

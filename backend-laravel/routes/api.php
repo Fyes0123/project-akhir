@@ -8,3 +8,5 @@ Route::post('/register', [UserController::class, 'register']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/loan-application',[LoanApplicationController::class, 'store']);
+Route::get('/loan-applications', [LoanApplicationController::class, 'index']);
+Route::patch('/loan-applications/{id}', [LoanApplicationController::class, 'update']);

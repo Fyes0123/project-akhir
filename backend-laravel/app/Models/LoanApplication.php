@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 
 class LoanApplication extends Model
 {
@@ -22,4 +23,9 @@ class LoanApplication extends Model
     'submission_date',
     'admin_notes',
 ];
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+    }
 }

@@ -1,55 +1,60 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const VerifikasiBerkasAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Menangkap data dinamis kartu nasabah yang dikirim dari halaman daftar sebelumnya
-  // Jika tidak ada (diakses manual), default ke data Ibu Aminah (ID: 101)
-  const currentLoan = location.state?.loanData || { id: 101, name: "Ibu Aminah - UMKM Keripik", amount: 5000000, tenor: "12 Bulan", purpose: "Modal Bahan Baku" };
+  const [loan, setLoan] = useState(null);
 
-  // FUNGSI UTAMA: Kirim data ke Superadmin & Update status internal Admin
+  // LOAD DATA (from navigation OR fallback API-ready structure)
+  useEffect(() => {
+    if (location.state?.loanData) {
+      setLoan(location.state.loanData);
+    } else {
+      setLoan(null);
+    }
+  }, [location.state]);
+
+  if (!loan) return <div style={{ padding: 20 }}>Loading...</div>;
+
+  const currentLoan = loan;
+
   const handleKirimKeSuperadmin = () => {
-    // ==========================================
-    // ALUR 1: KIRIM DATA KE LACI SUPERADMIN
-    // ==========================================
-    const antreanLama = JSON.parse(localStorage.getItem('listPengajuanSuperadmin')) || [];
-    
+    const antreanLama =
+      JSON.parse(localStorage.getItem('listPengajuanSuperadmin')) || [];
+
     const dataBungkusBaru = {
-      id: `TX-${Math.floor(10000 + Math.random() * 90000)}`, // ID transaksi unik otomatis
+      id: `TX-${Math.floor(10000 + Math.random() * 90000)}`,
       nama: currentLoan.name,
       nominal: currentLoan.amount.toLocaleString('id-ID'),
       tenor: currentLoan.tenor,
       keperluan: `${currentLoan.purpose} - Dana digunakan untuk operasional, pengembangan usaha, dan restock.`,
       verifikator: "Admin Lapangan (Sektor Pusat)",
       tglVerifikasi: "01 Juni 2026",
-      statusFinal: "PENDING" // Set ke PENDING agar antrean di Superadmin menyala kuning
+      statusFinal: "PENDING"
     };
-    
+
     const antreanTerbaru = [...antreanLama, dataBungkusBaru];
     localStorage.setItem('listPengajuanSuperadmin', JSON.stringify(antreanTerbaru));
 
-    // ==========================================
-    // ALUR 2: UPDATE STATUS INTERNAL DAFTAR ADMIN
-    // ==========================================
-    const listDaftarAdmin = JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
-    
-    // Cari kartu nasabah yang sedang diproses (berdasarkan ID) dan ubah statusnya jadi "Diteruskan"
+    const listDaftarAdmin =
+      JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
+
     const updatedListAdmin = listDaftarAdmin.map(item => {
       if (item.id === currentLoan.id) {
         return { ...item, status: "Diteruskan" };
       }
       return item;
     });
-    
-    localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(updatedListAdmin));
-    
-    // ==========================================
-    // ALUR 3: NOTIFIKASI & NAVIGASI KEMBALI
-    // ==========================================
-    alert(`🚀 Sukses! Laporan kelayakan ${currentLoan.name} berhasil diteruskan ke antrean Superadmin.`);
-    navigate(-1); // Otomatis balik ke halaman sebelumnya setelah sukses kirim
+
+    localStorage.setItem(
+      'listStatusDaftarAdmin',
+      JSON.stringify(updatedListAdmin)
+    );
+
+    alert(`Sukses! Laporan ${currentLoan.name} dikirim ke Superadmin.`);
+    navigate(-1);
   };
 
   return (
@@ -60,220 +65,134 @@ const VerifikasiBerkasAdmin = () => {
       fontFamily: "'Inter', sans-serif",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
-      boxSizing: "border-box"
+      alignItems: "center"
     }}>
-      
-      {/* CONTAINER UTAMA BANNER */}
+
+      {/* HEADER */}
       <div style={{
         maxWidth: "800px",
         width: "100%",
         backgroundColor: "#034425",
         borderRadius: "16px",
         padding: "28px",
-        color: "#ffffff",
-        textAlign: "left",
-        position: "relative",
-        boxSizing: "border-box",
-        marginBottom: "24px"
+        color: "#fff",
+        marginBottom: "24px",
+        position: "relative"
       }}>
-        <h2 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: "700" }}>Verifikasi Berkas Pengajuan</h2>
-        <p style={{ margin: 0, fontSize: "14px", opacity: 0.85 }}>Periksa detail formulir loan apply milik nasabah</p>
-        <button 
+        <h2 style={{ margin: 0 }}>Verifikasi Berkas Pengajuan</h2>
+        <p style={{ margin: "8px 0 0 0", fontSize: "14px", opacity: 0.85 }}>
+          Periksa detail pengajuan nasabah
+        </p>
+
+        <button
           onClick={() => navigate(-1)}
           style={{
             position: "absolute",
-            right: "28px",
-            top: "35px",
-            backgroundColor: "#22c55e",
-            color: "#ffffff",
-            border: "none",
-            padding: "8px 16px",
+            right: "20px",
+            top: "20px",
+            padding: "8px 14px",
             borderRadius: "8px",
-            fontWeight: "600",
+            border: "none",
+            backgroundColor: "#22c55e",
+            color: "#fff",
             cursor: "pointer"
           }}
         >
-          ⬅️ Kembali
+          Kembali
         </button>
       </div>
 
-      {/* KARTU 1: INFORMASI PEMOHON */}
+      {/* INFO */}
       <div style={{
         maxWidth: "800px",
         width: "100%",
-        backgroundColor: "#ffffff",
-        borderRadius: "16px",
+        backgroundColor: "#fff",
         padding: "24px",
-        border: "1px solid #e2e8f0",
-        textAlign: "left",
-        boxSizing: "border-box",
-        marginBottom: "24px"
+        borderRadius: "16px",
+        marginBottom: "20px"
       }}>
-        <h4 style={{ margin: "0 0 16px 0", color: "#034425", fontSize: "16px", fontWeight: "700" }}>👤 Informasi Pemohon</h4>
-        <div style={{ display: "flex", gap: "40px" }}>
-          <div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>NAMA LENGKAP NASABAH</span>
-            <p style={{ margin: "4px 0 0 0", fontWeight: "700", color: "#0f172a" }}>{currentLoan.name}</p>
-          </div>
-          <div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>JENIS USAHA UMKM</span>
-            <p style={{ margin: "4px 0 0 0", fontWeight: "700", color: "#0f172a" }}>Usaha Mikro Mitra Amartha</p>
-          </div>
-        </div>
+        <h4>Informasi Pemohon</h4>
+        <p><b>Nama:</b> {currentLoan.name}</p>
       </div>
 
-      {/* KARTU 2: DETAIL FINANSIAL PENGAJUAN */}
+      {/* DETAIL */}
       <div style={{
         maxWidth: "800px",
         width: "100%",
-        backgroundColor: "#ffffff",
-        borderRadius: "16px",
+        backgroundColor: "#fff",
         padding: "24px",
-        border: "1px solid #e2e8f0",
-        textAlign: "left",
-        boxSizing: "border-box",
-        marginBottom: "24px"
+        borderRadius: "16px",
+        marginBottom: "20px"
       }}>
-        <h4 style={{ margin: "0 0 16px 0", color: "#034425", fontSize: "16px", fontWeight: "700" }}>💰 Detail Finansial Pengajuan</h4>
-        <div style={{ display: "flex", gap: "60px", marginBottom: "16px" }}>
-          <div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>NOMINAL PINJAMAN</span>
-            <p style={{ margin: "4px 0 0 0", fontSize: "24px", fontWeight: "800", color: "#034425" }}>Rp {currentLoan.amount.toLocaleString('id-ID')}</p>
-          </div>
-          <div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>DURASI TENOR</span>
-            <p style={{ margin: "4px 0 0 0", fontSize: "24px", fontWeight: "800", color: "#0f172a" }}>{currentLoan.tenor}</p>
-          </div>
-        </div>
-        <div>
-          <span style={{ fontSize: "12px", color: "#64748b" }}>TUJUAN PENGGUNAAN DANA</span>
-          <p style={{ margin: "4px 0 0 0", padding: "12px", backgroundColor: "#f8fafc", borderRadius: "8px", fontSize: "14px", color: "#334155" }}>
-            <strong>{currentLoan.purpose}</strong> - Dana digunakan untuk operasional, pengembangan usaha, dan restock.
-          </p>
-        </div>
+        <h4>Detail Pengajuan</h4>
+        <p><b>Nominal:</b> Rp {currentLoan.amount.toLocaleString('id-ID')}</p>
+        <p><b>Tenor:</b> {currentLoan.tenor}</p>
+        <p><b>Tujuan:</b> {currentLoan.purpose}</p>
       </div>
 
-      {/* KARTU 3: DOKUMEN LAMPIRAN */}
-      <div style={{
-        maxWidth: "800px",
-        width: "100%",
-        backgroundColor: "#ffffff",
-        borderRadius: "16px",
-        padding: "24px",
-        border: "1px solid #e2e8f0",
-        textAlign: "left",
-        boxSizing: "border-box",
-        position: "relative"
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <h4 style={{ margin: 0, color: "#034425", fontSize: "16px", fontWeight: "700" }}>📄 Dokumen Lampiran</h4>
-          <span style={{ backgroundColor: "#fef9c3", color: "#a16207", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "700" }}>Pending</span>
-        </div>
-
-        {/* Baris Berkas KTP */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px", border: "1px solid #22c55e", borderRadius: "12px", backgroundColor: "#f0fdf4", marginBottom: "12px" }}>
-          <div>
-            <p style={{ margin: "0 0 4px 0", fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>Syarat_Berkas_Kelayakan.pdf</p>
-            <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>KTP</p>
-          </div>
-          <button style={{ backgroundColor: "#22c55e", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "12px", color: "#fff", cursor: "pointer" }}>👁️ Lihat Berkas</button>
-        </div>
-
-        {/* Baris Berkas NPWP */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px", border: "1px solid #22c55e", borderRadius: "12px", backgroundColor: "#f0fdf4", marginBottom: "12px" }}>
-          <div>
-            <p style={{ margin: "0 0 4px 0", fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>Syarat_Berkas_Kelayakan.pdf</p>
-            <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>NPWP</p>
-          </div>
-          <button style={{ backgroundColor: "#22c55e", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "12px", color: "#fff", cursor: "pointer" }}>👁️ Lihat Berkas</button>
-        </div>
-
-        {/* Baris Berkas SKU */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px", border: "1px solid #22c55e", borderRadius: "12px", backgroundColor: "#f0fdf4" }}>
-          <div>
-            <p style={{ margin: "0 0 4px 0", fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>Syarat_Berkas_Kelayakan.pdf</p>
-            <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>SKU (Surat Keterangan Usaha)</p>
-          </div>
-          <button style={{ backgroundColor: "#22c55e", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "12px", color: "#fff", cursor: "pointer" }}>👁️ Lihat Berkas</button>
-        </div>
-      </div>
-
-      {/* CONTAINER TOMBOL AKSI */}
+      {/* ACTIONS */}
       <div style={{
         maxWidth: "800px",
         width: "100%",
         display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        gap: "20px",
-        marginTop: "32px",
-        boxSizing: "border-box"
+        gap: "20px"
       }}>
-        {/* TOMBOL KIRI */}
-<button 
-  onClick={() => {
-    // 1. Munculkan kotak input catatan untuk admin
-    const catatan = prompt("Masukkan alasan koreksi perbaikan berkas untuk nasabah (misal: File KTP buram):");
-    
-    // Jika admin mengisi catatan (tidak klik cancel/kosong)
-    if (catatan) {
-      // 2. Ambil data list daftar milik admin dari localStorage
-      const listDaftarAdmin = JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
-      
-      // 3. Cari nasabah yang sedang aktif dan ubah statusnya menjadi "Perbaikan"
-      const updatedListAdmin = listDaftarAdmin.map(item => {
-        if (item.id === currentLoan.id) {
-          return { 
-            ...item, 
-            status: "Perbaikan",
-            catatanAdmin: catatan // Menyimpan catatan koreksi (opsional jika nanti mau ditampilkan)
-          };
-        }
-        return item;
-      });
-      
-      // 4. Simpan kembali ke localStorage
-      localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(updatedListAdmin));
-      
-      alert(`Status: Berkas berhasil ditolak & dikembalikan ke Nasabah dengan catatan: "${catatan}"`);
-      navigate(-1);
-    }
-  }}
-  style={{
-    flex: "1",
-    padding: "16px",
-    backgroundColor: "#fff5f5",
-    color: "#e11d48",
-    border: "2px solid #fca5a5",
-    borderRadius: "12px",
-    fontSize: "15px",
-    fontWeight: "700",
-    cursor: "pointer"
-  }}
->
-  ❌ Tolak & Ajukan Perbaikan Berkas Nasabah
-</button>
 
-        {/* TOMBOL KANAN */}
-        <button 
-          onClick={handleKirimKeSuperadmin}
+        {/* REJECT */}
+        <button
+          onClick={() => {
+            const catatan = prompt("Alasan perbaikan:");
+            if (!catatan) return;
+
+            const list =
+              JSON.parse(localStorage.getItem('listStatusDaftarAdmin')) || [];
+
+            const updated = list.map(item =>
+              item.id === currentLoan.id
+                ? { ...item, status: "Perbaikan", catatanAdmin: catatan }
+                : item
+            );
+
+            localStorage.setItem(
+              'listStatusDaftarAdmin',
+              JSON.stringify(updated)
+            );
+
+            alert("Dikembalikan ke nasabah");
+            navigate(-1);
+          }}
           style={{
-            flex: "1",
+            flex: 1,
             padding: "16px",
-            backgroundColor: "#034425",
-            color: "#ffffff",
-            border: "none",
-            borderRadius: "12px",
-            fontSize: "15px",
+            backgroundColor: "#fee2e2",
+            border: "2px solid #fca5a5",
+            color: "#e11d48",
             fontWeight: "700",
+            borderRadius: "12px",
             cursor: "pointer"
           }}
         >
-          ✔️ Terima & Teruskan Laporan ke Superadmin
+          Tolak & Perbaiki
         </button>
-      </div>
 
+        {/* APPROVE */}
+        <button
+          onClick={handleKirimKeSuperadmin}
+          style={{
+            flex: 1,
+            padding: "16px",
+            backgroundColor: "#034425",
+            color: "#fff",
+            fontWeight: "700",
+            borderRadius: "12px",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          Teruskan ke Superadmin
+        </button>
+
+      </div>
     </div>
   );
 };

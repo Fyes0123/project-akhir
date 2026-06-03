@@ -11,21 +11,14 @@ const DashboardAdmin = () => {
   const [monitoringData, setMonitoringData] = useState([]);
 
   useEffect(() => {
-    const localData = localStorage.getItem('listStatusDaftarAdmin');
-    if (localData) {
-      setMonitoringData(JSON.parse(localData));
-    } else {
-      const initialLoansData = [
-        { id: 101, name: "Ibu Aminah - UMKM Keripik", purpose: "Modal Bahan Baku", amount: 5000000, tenor: "12 Bulan", status: "Pending" },
-        { id: 102, name: "Ibu Siti - Tenun Ikat", purpose: "Beli Alat Tenun Baru", amount: 8000000, tenor: "24 Bulan", status: "Pending" },
-        { id: 103, name: "Ibu Fatimah - Warung Kelontong", purpose: "Restock Sembako", amount: 3500000, tenor: "6 Bulan", status: "Pending" },
-        { id: 104, name: "Ibu Rahma - Konveksi Rumahan", purpose: "Beli Mesin Jahit Obras", amount: 12000000, tenor: "18 Bulan", status: "Pending" },
-        { id: 105, name: "Ibu Khadijah - Budidaya Lele", purpose: "Pembuatan Kolam Terpal", amount: 4500000, tenor: "12 Bulan", status: "Pending" },
-        { id: 106, name: "Ibu Maryam - Katering Rumahan", purpose: "Beli Alat Masak & Gas", amount: 7000000, tenor: "12 Bulan", status: "Pending" },
-      ];
-      localStorage.setItem('listStatusDaftarAdmin', JSON.stringify(initialLoansData));
-      setMonitoringData(initialLoansData);
-    }
+    fetch('http://127.0.0.1:8000/api/loan-applications')
+      .then((res) => res.json())
+      .then((data) => {
+        setMonitoringData(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   // 1. RUMUS DINAMIS TOTAL NASABAH
@@ -41,21 +34,28 @@ const DashboardAdmin = () => {
   ).length;
 
   const laporanDiterima = '150+';
-
+  const statusMap = {
+    pending: 'Pending',
+    revisi: 'Perbaikan',
+    rejected: 'Ditolak',
+    education_required: 'Edukasi',
+    eligible: 'Layak',
+    eligible_disbursement: 'Siap Cair',
+  };
   const colors = {
     amarthaDark: "#034425",
-    amarthaActive: "#0f5933", 
+    amarthaActive: "#0f5933",
     bgGray: "#f8fafc",
     textMain: "#0f172a",
     textMuted: "#64748b"
   };
 
   const styles = {
-    wrapper: { 
-      display: "flex", 
-      minHeight: "100vh", 
+    wrapper: {
+      display: "flex",
+      minHeight: "100vh",
       fontFamily: "'Inter', sans-serif",
-      backgroundColor: colors.bgGray 
+      backgroundColor: colors.bgGray
     },
     sidebar: {
       width: "280px",
@@ -113,15 +113,15 @@ const DashboardAdmin = () => {
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "20px"
     },
-    cardMetric: { 
-      backgroundColor: "#ffffff", 
-      padding: "24px", 
-      borderRadius: "16px", 
-      border: "1px solid #e2e8f0", 
-      display: "flex", 
-      flexDirection: "column", 
-      gap: "8px", 
-      boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)" 
+    cardMetric: {
+      backgroundColor: "#ffffff",
+      padding: "24px",
+      borderRadius: "16px",
+      border: "1px solid #e2e8f0",
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+      boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)"
     },
     metricLabel: { fontSize: "13px", fontWeight: "700", color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px" },
     metricValue: { fontSize: "32px", fontWeight: "800", color: colors.textMain },
@@ -139,13 +139,13 @@ const DashboardAdmin = () => {
 
   return (
     <div style={styles.wrapper}>
-      
+
       {/* ================= SIDEBAR KIRI ================= */}
       <div style={styles.sidebar}>
         <div style={styles.sidebarHeader}>
           <h2 style={styles.brandTitle}>Amartha Empower</h2>
         </div>
-        
+
         <div style={styles.menuContainer}>
           <div style={styles.sidebarMenu(true)} onClick={() => navigate('/dashboardadmin')}>
             <span>🏠</span>
@@ -164,7 +164,7 @@ const DashboardAdmin = () => {
 
       {/* ================= AREA KONTEN UTAMA ================= */}
       <div style={styles.mainContent}>
-        
+
         <div style={styles.contentHeader}>
           <div>
             <h1 style={{ margin: 0, fontSize: "26px", fontWeight: "800", color: colors.textMain }}>Admin Lapangan</h1>
@@ -207,14 +207,14 @@ const DashboardAdmin = () => {
               <tbody>
                 {monitoringData.map((item) => (
                   <tr key={item.id}>
-                    <td style={styles.td}><strong>{item.name || item.nama}</strong></td>
-                    <td style={styles.td}>Rp {(item.amount || 0).toLocaleString('id-ID')}</td>
+                    <td style={styles.td}><strong>{item.user?.full_name}</strong></td>
+                    <td style={styles.td}>Rp {Number(item.amount).toLocaleString('id-ID')}</td>
                     <td style={styles.td}>
                       <span style={styles.badge(item.status)}>
-                        {item.status === "Diteruskan" ? "✓ Diteruskan" : 
-                         item.status === "Perbaikan" ? "⚠️ Perbaikan" : 
-                         item.status === "Disetujui Superadmin" ? "💰 Cair" :
-                         item.status === "Ditolak Superadmin" ? "❌ Ditolak" : item.status}
+                        {item.status === "Diteruskan" ? "✓ Diteruskan" :
+                          item.status === "Perbaikan" ? "⚠️ Perbaikan" :
+                            item.status === "Disetujui Superadmin" ? "💰 Cair" :
+                              item.status === "Ditolak Superadmin" ? "❌ Ditolak" : item.status}
                       </span>
                     </td>
                     <td style={styles.td}>

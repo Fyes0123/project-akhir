@@ -2,32 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth';
 
 const DashboardSuperadmin = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth()
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    logout()
+    logout();
+    navigate('/login', { replace: true });
+  };
 
-    navigate('/login', {
-      replace: true,
-    })
-  }
-  
   // State untuk menyimpan data monitoring dari localStorage
   const [monitoringData, setMonitoringData] = useState([]);
   const [approvedCount, setApprovedCount] = useState(25);
 
   useEffect(() => {
-    // 1. Ambil data transaksi mitra untuk menghitung Total Nasabah secara dinamis
-    const localData = localStorage.getItem('listStatusDaftarAdmin');
-    if (localData) {
-      setMonitoringData(JSON.parse(localData));
+    // ==============================
+    // DATA UTAMA: QUEUE SUPERADMIN
+    // ==============================
+    const superadminQueue = localStorage.getItem('listPengajuanSuperadmin');
+
+    if (superadminQueue) {
+      setMonitoringData(JSON.parse(superadminQueue));
+    } else {
+      setMonitoringData([]);
     }
 
-    // 2. Ambil angka persetujuan bawaan
+    // ==============================
+    // APPROVED COUNTER
+    // ==============================
     const savedCount = localStorage.getItem('approvedCount');
     if (savedCount) {
       setApprovedCount(parseInt(savedCount));
@@ -37,10 +41,12 @@ const DashboardSuperadmin = () => {
   }, []);
 
   const baseNasabah = 120;
+
+  // FIX: gunakan statusFinal (bukan status)
   const nasabahBaruCair = monitoringData.filter(
-    (item) => item.status === "Disetujui Superadmin" || item.status === "Cair"
+    (item) => item.statusFinal === "APPROVED" || item.statusFinal === "CAIR"
   ).length;
-  
+
   const totalNasabahDinamis = baseNasabah + nasabahBaruCair;
 
   return (
@@ -53,7 +59,6 @@ const DashboardSuperadmin = () => {
       width: "100%",
       boxSizing: "border-box"
     }}>
-      {/* HEADER NAVBAR */}
       <Navbar />
 
       <div style={{
@@ -63,7 +68,8 @@ const DashboardSuperadmin = () => {
         width: "100%",
         boxSizing: "border-box"
       }}>
-        
+
+        {/* SIDEBAR */}
         <div style={{
           width: "260px",
           backgroundColor: "#034425",
@@ -75,7 +81,6 @@ const DashboardSuperadmin = () => {
           boxSizing: "border-box",
           textAlign: "left"
         }}>
-          {/* Menu Dashboard Aktif */}
           <div style={{
             backgroundColor: "#022c18",
             padding: "14px 16px",
@@ -89,155 +94,75 @@ const DashboardSuperadmin = () => {
             <span>🏠</span> Dashboard
           </div>
 
-          {/* Menu Navigasi Sisi Kiri */}
-          <div 
-            onClick={() => navigate('/superadmin/verifikasi')} 
-            style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85, display: "flex", alignItems: "center", gap: "12px" }}
-          >
+          <div onClick={() => navigate('/superadmin/verifikasi')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85 }}>
             <span>🔍</span> Verifikasi Peminjaman
           </div>
-          
-          <div onClick={() => navigate('/superadmin/laporan')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85, display: "flex", alignItems: "center", gap: "12px" }}>
+
+          <div onClick={() => navigate('/superadmin/laporan')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85 }}>
             <span>📊</span> Laporan Nasabah
           </div>
-          
-          <div onClick={() => navigate('/superadmin/list-nasabah')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85, display: "flex", alignItems: "center", gap: "12px" }}>
+
+          <div onClick={() => navigate('/superadmin/list-nasabah')} style={{ padding: "14px 16px", borderRadius: "12px", cursor: "pointer", opacity: 0.85 }}>
             <span>👥</span> Nasabah Management
-          </div>
-
-
-          {/* Profil Singkat di Bawah Sidebar */}
-          <div style={{ marginTop: "auto", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "#ffffff", color: "#034425", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold" }}>SA</div>
-            <div>
-              <p style={{ margin: 0, fontSize: "14px", fontWeight: "600" }}>Superadmin</p>
-              <p style={{ margin: 0, fontSize: "11px", opacity: 0.6 }}>Amartha Empower</p>
-            </div>
           </div>
         </div>
 
-        {/* AREA KONTEN UTAMA (SEBELAH KANAN) */}
+        {/* MAIN CONTENT */}
         <div style={{
           flex: "1",
           padding: "40px",
-          boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
           gap: "32px"
         }}>
-          
-          {/* Judul Halaman & Breadcrumb */}
+
+          {/* HEADER */}
           <div style={{ textAlign: "left" }}>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#0f172a", margin: "0 0 6px 0" }}>Superadmin</h1>
-            <div style={{ fontSize: "14px", color: "#64748b", fontWeight: "500" }}>
-              Dashboard &gt; <span style={{ color: "#034425", fontWeight: "600" }}>Dashboard</span>
-            </div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#0f172a" }}>Superadmin</h1>
           </div>
 
-          {/* 📊 1. BARIS KARTU KPI STATISTIK */}
-          <div style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "24px",
-            width: "100%",
-            flexWrap: "wrap"
-          }}>
-            {/* Total Nasabah (Sudah menggunakan variabel dinamis) */}
-            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#ffffff", borderRadius: "16px", padding: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ textAlign: "left" }}>
-                <span style={{ fontSize: "14px", color: "#64748b", fontWeight: "600" }}>Total Nasabah</span>
-                <p style={{ fontSize: "36px", fontWeight: "800", color: "#0f172a", margin: "4px 0 0 0" }}>{totalNasabahDinamis}</p>
-              </div>
-              <div style={{ fontSize: "40px", opacity: 0.2 }}>👥</div>
+          {/* KPI CARDS */}
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+
+            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#fff", padding: "24px", borderRadius: "16px" }}>
+              <span>Total Nasabah</span>
+              <p style={{ fontSize: "36px", fontWeight: "800" }}>{totalNasabahDinamis}</p>
             </div>
 
-            {/* Pinjaman Disetujui */}
-            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#e2f5ea", borderRadius: "16px", padding: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)", border: "2px solid #22c55e", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ textAlign: "left" }}>
-                <span style={{ fontSize: "14px", color: "#034425", fontWeight: "600" }}>Pinjaman Disetujui</span>
-                <p style={{ fontSize: "36px", fontWeight: "800", color: "#034425", margin: "4px 0 0 0" }}>{approvedCount}</p>
-              </div>
-              <div style={{ fontSize: "40px", opacity: 0.3 }}>💰</div>
+            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#e2f5ea", padding: "24px", borderRadius: "16px" }}>
+              <span>Pinjaman Disetujui</span>
+              <p style={{ fontSize: "36px", fontWeight: "800", color: "#034425" }}>{approvedCount}</p>
             </div>
 
-            {/* Pinjaman Pending */}
-            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#ffffff", borderRadius: "16px", padding: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.02)", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ textAlign: "left" }}>
-                <span style={{ fontSize: "14px", color: "#64748b", fontWeight: "600" }}>Pinjaman Pending</span>
-                <p style={{ fontSize: "36px", fontWeight: "800", color: "#0f172a", margin: "4px 0 0 0" }}>100+</p>
-              </div>
-              <div style={{ fontSize: "40px", opacity: 0.2 }}>⏳</div>
-            </div>
-          </div>
-
-          {/* ⚡ 2. BARIS KARTU SHORTCUT & PERINGATAN KPI */}
-          <div style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "24px",
-            width: "100%",
-            flexWrap: "wrap"
-          }}>
-            {/* KARTU JALAN PINTAS VERIFIKASI */}
-            <div 
-              onClick={() => navigate('/superadmin/verifikasi')}
-              style={{
-                flex: "1",
-                minWidth: "300px",
-                backgroundColor: "#034425",
-                borderRadius: "16px",
-                padding: "28px",
-                cursor: "pointer",
-                textAlign: "left",
-                boxShadow: "0 4px 14px rgba(3, 68, 37, 0.2)",
-                transition: "transform 0.2s ease"
-              }}
-              onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
-              onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
-            >
-              <div style={{ fontSize: "32px", marginBottom: "12px" }}>🛡️</div>
-              <h3 style={{ color: "#ffffff", margin: 0, fontSize: "20px", fontWeight: "700" }}>Verifikasi Peminjaman</h3>
-              <p style={{ color: "#a3cfbb", opacity: 0.9, fontSize: "13px", marginTop: "6px", lineHeight: "1.5" }}>
-                Validasi berkas & eksekusi kelayakan aplikasi dana UMKM yang dikirim oleh Admin Lapangan.
+            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#fff", padding: "24px", borderRadius: "16px" }}>
+              <span>Pinjaman Pending</span>
+              <p style={{ fontSize: "36px", fontWeight: "800" }}>
+                {monitoringData.filter(i => i.statusFinal === "PENDING").length}
               </p>
             </div>
 
-            {/* Panel Peringatan KPI */}
-            <div style={{ flex: "1", minWidth: "280px", backgroundColor: "#ffffff", borderRadius: "16px", padding: "28px", border: "1px solid #e2e8f0", textAlign: "left" }}>
-              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#0f172a", marginBottom: "12px" }}>Peringatan KPI</h3>
-              <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>
-                Pinjaman Status Pending saat ini mencapai <strong style={{ color: "#0f172a" }}>100+</strong>. Segera periksa daftar antrean peminjam tertunda pada tombol verifikasi di samping.
-              </p>
-            </div>
           </div>
 
-          {/* 🧾 3. BARIS AKTIVITAS TERBARU */}
-          <div style={{ backgroundColor: "#ffffff", borderRadius: "16px", padding: "28px", border: "1px solid #e2e8f0", textAlign: "left" }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#0f172a", marginBottom: "20px" }}>Aktivitas Terbaru</h3>
-            
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "12px 0", borderBottom: "1px solid #f1f5f9" }}>
-              <div style={{ fontSize: "20px", backgroundColor: "#f0fdf4", padding: "8px", borderRadius: "50%" }}>📝</div>
-              <div>
-                <p style={{ margin: 0, fontSize: "14px", fontWeight: "600" }}>Verifikasi Peminjaman</p>
-                <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Pemeriksaan berkas Mitra UMKM Sektor Pertanian</p>
-              </div>
-              <span style={{ marginLeft: "auto", fontSize: "12px", color: "#94a3b8" }}>3 jam yang lalu</span>
-            </div>
+          {/* QUEUE PREVIEW (IMPORTANT ADDITION) */}
+          <div style={{ backgroundColor: "#fff", padding: "24px", borderRadius: "16px" }}>
+            <h3>Antrean Pengajuan dari Admin</h3>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "12px 0" }}>
-              <div style={{ fontSize: "20px", backgroundColor: "#f0fdf4", padding: "8px", borderRadius: "50%" }}>👥</div>
-              <div>
-                <p style={{ margin: 0, fontSize: "14px", fontWeight: "600" }}>Nasabah Management</p>
-                <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Pembaruan profil pendaftaran kelompok simpan pinjam</p>
-              </div>
-              <span style={{ marginLeft: "auto", fontSize: "12px", color: "#94a3b8" }}>2 jam yang lalu</span>
-            </div>
+            {monitoringData.length === 0 ? (
+              <p>Tidak ada pengajuan masuk</p>
+            ) : (
+              monitoringData.map((item) => (
+                <div key={item.id} style={{ padding: "12px 0", borderBottom: "1px solid #eee" }}>
+                  <strong>{item.nama}</strong>
+                  <p>Rp {parseInt(item.nominal).toLocaleString('id-ID')}</p>
+                  <p>Status: {item.statusFinal}</p>
+                </div>
+              ))
+            )}
           </div>
 
         </div>
       </div>
 
-      {/* FOOTER BAWAH */}
       <Footer />
     </div>
   );
