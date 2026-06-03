@@ -18,10 +18,7 @@ import ListPinjaman from '@/pages/Admin/ListPeminjaman'
 import LoanApplication from '@/pages/Admin/LoanApplication'
 import DashboardAdmin from '@/pages/Admin/DashboardAdmin'
 import VerificationPage from '@/pages/Admin/VerificationPage';
-<<<<<<< HEAD
-=======
 {/* Superadmin */}
->>>>>>> addnew-frontend-dashboard-profile
 import DashboardSuperadmin from '../pages/Superadmin/DashboardSuperadmin'
 import ListPinjamanSuperadmin from '../pages/Superadmin/ListPinjamanSuperadmin'
 import DetailPengajuanSuperadmin from '../pages/Superadmin/DetailPengajuanSuperadmin'

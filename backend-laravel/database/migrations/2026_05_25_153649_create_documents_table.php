@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('loans_application_id')->constrained('loans_application')->onDelete('cascade');
+    $table->foreignId('loan_application_id')->constrained('loan_applications')->onDelete('cascade');
     $table->string('document_type');
     $table->string('file_path');
     $table->enum('verification_status', ['pending', 'approved', 'rejected', 'revision'])->default('pending');
