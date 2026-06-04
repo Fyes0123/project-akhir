@@ -41,7 +41,7 @@ export default function AppRouter() {
 
             <Route path="/superadmin" element={<DashboardSuperadmin />} />
           <Route path="/superadmin/list-pinjaman" element={<ListPinjamanSuperadmin />} />
-          <Route path="/superadmin/list-nasabah" element={<ListNasabahSuperadmin />} />
+          <Route path="/superadmin/listnasabah" element={<ListNasabahSuperadmin />} />
           <Route path="/superadmin/laporan" element={<LaporanSuperadmin />} />
           <Route path="/superadmin/detail-pengajuan" element={<DetailPengajuanSuperadmin />} />
           <Route path="/superadmin/verifikasi" element={<PersetujuanSuperadmin />} />

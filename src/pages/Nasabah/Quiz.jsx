@@ -5,55 +5,43 @@ export default function Quiz() {
   const navigate = useNavigate()
 
   const [error, setError] = useState('')
-
   const [quizAnswers, setQuizAnswers] = useState({})
 
   const questions = [
     {
       id: 1,
-      question:
-        'Apakah Anda memiliki KTP atau identitas resmi yang masih berlaku?',
+      question: 'Apakah Anda memiliki KTP atau identitas resmi yang masih berlaku?',
     },
     {
       id: 2,
-      question:
-        'Apakah data yang Anda berikan sesuai dengan kondisi sebenarnya?',
+      question: 'Apakah data yang Anda berikan sesuai dengan kondisi sebenarnya?',
     },
     {
       id: 3,
-      question:
-        'Apakah Anda memahami kewajiban pembayaran pinjaman tepat waktu?',
+      question: 'Apakah Anda memahami kewajiban pembayaran pinjaman tepat waktu?',
     },
     {
       id: 4,
-      question:
-        'Apakah Anda bersedia mengikuti proses verifikasi data?',
+      question: 'Apakah Anda bersedia mengikuti proses verifikasi data?',
     },
     {
       id: 5,
-      question:
-        'Apakah Anda menyetujui seluruh syarat dan ketentuan peminjaman?',
+      question: 'Apakah Anda menyetujui seluruh syarat dan ketentuan peminjaman?',
     },
   ]
 
   const handleSubmit = () => {
-    if (
-      Object.keys(quizAnswers).length !==
-      questions.length
-    ) {
+    if (Object.keys(quizAnswers).length !== questions.length) {
       setError('Semua pertanyaan wajib dijawab.')
       return
     }
 
     const allCorrect = questions.every(
-      question =>
-        quizAnswers[question.id] === 'A'
+      question => quizAnswers[question.id] === 'A'
     )
 
     if (!allCorrect) {
-      setError(
-        'Anda belum memenuhi syarat peminjaman. Semua jawaban harus A.'
-      )
+      setError('Anda belum memenuhi syarat peminjaman. Semua jawaban harus A.')
       return
     }
 
@@ -80,22 +68,10 @@ export default function Quiz() {
 
                 <div className="flex flex-wrap gap-6">
                   {[
-                    {
-                      value: 'A',
-                      label: 'Ya',
-                    },
-                    {
-                      value: 'B',
-                      label: 'Tidak',
-                    },
-                    {
-                      value: 'C',
-                      label: 'Ragu-ragu',
-                    },
-                    {
-                      value: 'D',
-                      label: 'Tidak Tahu',
-                    },
+                    { value: 'A', label: 'Ya' },
+                    { value: 'B', label: 'Tidak' },
+                    { value: 'C', label: 'Ragu-ragu' },
+                    { value: 'D', label: 'Tidak Tahu' },
                   ].map(option => (
                     <label
                       key={option.value}
@@ -105,23 +81,16 @@ export default function Quiz() {
                         type="radio"
                         name={`question-${question.id}`}
                         value={option.value}
-                        checked={
-                          quizAnswers[
-                            question.id
-                          ] === option.value
-                        }
+                        checked={quizAnswers[question.id] === option.value}
                         onChange={() =>
                           setQuizAnswers(prev => ({
                             ...prev,
-                            [question.id]:
-                              option.value,
+                            [question.id]: option.value,
                           }))
                         }
                       />
-
                       <span>
-                        {option.value}.{' '}
-                        {option.label}
+                        {option.value}. {option.label}
                       </span>
                     </label>
                   ))}
@@ -140,19 +109,20 @@ export default function Quiz() {
             </div>
           )}
 
+          {/* 🔥 FIX: Mengeliminasi duplikasi onClick */}
           <div className="flex justify-between mt-10">
             <button
-              onClick={() => navigate(-1)}
-              className="bg-lime-600 hover:bg-lime-700 text-white px-8 py-3 rounded"
+              type="button"
               onClick={() => navigate('/module')}
+              className="bg-lime-600 hover:bg-lime-700 text-white px-8 py-3 rounded"
             >
               Go Back
             </button>
 
             <button
+              type="button"
               onClick={handleSubmit}
               className="bg-lime-600 hover:bg-lime-700 text-white px-8 py-3 rounded"
-              onClick={() => navigate('/dashboardnasabah')}
             >
               Proceed
             </button>
