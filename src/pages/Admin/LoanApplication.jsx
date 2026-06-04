@@ -19,7 +19,7 @@ const LoanApplicationAdmin = () => {
       <div style={{ backgroundColor: "#023015", padding: "16px 40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h3 style={{ color: "#fff", margin: 0, fontSize: "16px", fontWeight: "bold" }}>Amartha Empower</h3>
         <div style={{ display: "flex", gap: "10px" }}>
-          <button onClick={() => navigate('/admin/dashboard')} style={{ padding: "8px 16px", backgroundColor: "#00cc44", color: "#fff", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "bold" }}>Dashboard</button>
+          <button onClick={() => navigate('/dashboardadmin')} style={{ padding: "8px 16px", backgroundColor: "#00cc44", color: "#fff", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "bold" }}>Dashboard</button>
           <button style={{ padding: "8px 16px", backgroundColor: "#00cc44", color: "#fff", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "bold" }}>Profile</button>
           <button style={{ padding: "8px 16px", backgroundColor: "#00cc44", color: "#fff", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "bold" }}>Modul</button>
           <button style={{ padding: "8px 16px", backgroundColor: "#00cc44", color: "#fff", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "bold" }}>Komunitas</button>
@@ -31,7 +31,7 @@ const LoanApplicationAdmin = () => {
           
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
             <h2 style={{ color: "#023015", fontSize: "26px", fontWeight: "800", margin: 0 }}>Loan Application Admin</h2>
-            <button onClick={() => navigate('/admin/dashboard')} style={{ padding: "10px 20px", backgroundColor: "#fff", border: "2px solid #023015", borderRadius: "10px", color: "#023015", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}>
+            <button onClick={() => navigate('/dashboardadmin')} style={{ padding: "10px 20px", backgroundColor: "#fff", border: "2px solid #023015", borderRadius: "10px", color: "#023015", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}>
               📋 Kembali ke Dashboard
             </button>
           </div>
