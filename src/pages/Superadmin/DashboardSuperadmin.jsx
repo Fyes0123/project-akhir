@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth'
 
 const SuperadminDashboard = () => {
   const navigate = useNavigate();
@@ -28,6 +29,16 @@ const SuperadminDashboard = () => {
     : 0;
   const totalNasabahDinamis = baseNasabah + nasabahBaruCair;
 
+  const { logout } = useAuth()
+  
+    const handleLogout = () => {
+      logout()
+  
+      navigate('/login', {
+        replace: true,
+      })
+    }
+
   return (
     <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", fontFamily: "'Inter', sans-serif", display: "flex", flexDirection: "column" }}>
       
@@ -38,6 +49,7 @@ const SuperadminDashboard = () => {
         </h3>
         <button 
           onClick={() => alert('Logout Berhasil')}
+          onClick={handleLogout}
           style={{ padding: "8px 20px", backgroundColor: "#b91c1c", color: "#fff", border: "none", borderRadius: "8px", fontSize: "13px", fontWeight: "700", cursor: "pointer", transition: "all 0.2s" }}
         >
           Logout

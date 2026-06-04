@@ -8,6 +8,16 @@ const DashboardAdmin = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const { logout } = useAuth()
+    
+      const handleLogout = () => {
+        logout()
+    
+        navigate('/login', {
+          replace: true,
+        })
+      }
+
   const [monitoringData, setMonitoringData] = useState([]);
 
   // ================= UTAMAKAN LOCALSTORAGE SUPAYA SINKRON 100% =================
@@ -117,7 +127,25 @@ const DashboardAdmin = () => {
   };
 
   return (
-    <div style={styles.wrapper}>
+
+      <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", fontFamily: "'Inter', sans-serif", display: "flex", flexDirection: "column" }}>
+      
+      {/* HEADER / NAVBAR */}
+      <div style={{ backgroundColor: "#023015", padding: "16px 40px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
+        <h3 style={{ color: "#fff", margin: 0, fontSize: "18px", fontWeight: "800", letterSpacing: "0.5px" }}>
+          Amartha Empower <span style={{ fontWeight: "400", color: "#e8fcf0", fontSize: "13px", marginLeft: "8px", borderLeft: "1px solid #047857", paddingLeft: "8px" }}>Superadmin Console</span>
+        </h3>
+        <button 
+          onClick={() => alert('Logout Berhasil')}
+          onClick={handleLogout}
+          style={{ padding: "8px 20px", backgroundColor: "#b91c1c", color: "#fff", border: "none", borderRadius: "8px", fontSize: "13px", fontWeight: "700", cursor: "pointer", transition: "all 0.2s" }}
+        >
+          Logout
+        </button>
+      </div>
+
+      <div style={styles.wrapper}></div>
+
       {/* SIDEBAR */}
       <div style={styles.sidebar}>
         <div style={styles.sidebarHeader}><h2 style={styles.brandTitle}>Amartha Empower</h2></div>
